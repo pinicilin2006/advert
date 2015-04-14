@@ -1,8 +1,8 @@
 <?php
 //Данные для подключения к mysql
 $dbhost = "localhost";
-$dbbase = "osago";
-$dbuser = "osago";
+$dbbase = "sia_press";
+$dbuser = "sia_press";
 $dbpass = "aq1sw2de3";
 ///////////////////////////////
 //Наименование организации

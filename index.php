@@ -17,7 +17,7 @@ require_once('template/header.html');
 		<div class="col-md-6 col-md-offset-3">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
-	    			<h3 class="panel-title">Список изменений внесённых в веб-сервис ОСАГО</h3>
+	    			<h3 class="panel-title">Список изменений внесённых в веб-сервис</h3>
 	  			</div>
 	  			<div class="panel-body" id="user_data">
 	  			<ul style="padding:0px">
@@ -34,8 +34,8 @@ require_once('template/header.html');
 		</div>
 	</div>
 </div>
-<div class="footer text-center">
-	<small>©<?php echo date("Y") ?>. <a href="https://www.sngi.ru">Страховое общество «Сургутнефтегаз».</a> Все права защищены.</small>
+<div class="footer navbar-fixed-bottom text-center">
+  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a> Все права защищены.</small>
 </div>
 </body>
 </html>
