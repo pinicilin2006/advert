@@ -23,8 +23,8 @@ require_once('template/header.html');
 					<form role="form">
 						<div class="row">
 								<div class="col-xs-5 col-sm-5 col-md-5">
-									<div class="form-group ">
-									    <select class="form-control">
+									<div class="form-group">
+									    <select class="form-control" name="item">
 									    <option value="" disabled selected>Пункт приёма</option>
 									    <?php					  		
 								  		$query=mysql_query("SELECT * FROM `item` ORDER BY name");
@@ -44,7 +44,7 @@ require_once('template/header.html');
 									while($row = mysql_fetch_assoc($query)){
 									?>
 										<div class="radio-inline">
-										  	<label><input type="radio" name="view_ads" value="<?php echo $row['id']?>" checked><?php echo $row['name']?></label>
+										  	<label style="font-weight:normal"><input type="radio" name="view_ads" value="<?php echo $row['id']?>" checked><?php echo $row['name']?></label>
 										</div>
 									<?php
 									}
@@ -64,7 +64,51 @@ require_once('template/header.html');
 									</div>
 						  		</div>						  		
 						</div>
+						<div class="row">
+								<div class="col-xs-6 col-sm-6 col-md-6">
+									<div class="form-group has-feedback">					    					    
+									      <textarea class="form-control" rows="11" name="text_advert" placeholder="Текст объявления"></textarea>					    
+									</div>
+						  		</div>
+								<div class="col-xs-6 col-sm-6 col-md-6">
+									<div class="form-group has-feedback">	
+										<input type="text" class="form-control" id="simpliest-usage" placeholder="Дата выхода объявления">
+									</div>
+									<div class="col-xs-6 col-sm-6 col-md-6" style="padding-left:0px">
+										<div class="form-group has-feedback">	
+											<input type="text" class="form-control" id="days" name="days" placeholder="Количество дней">
+										</div>
+									</div>
+									<div class="col-xs-6 col-sm-6 col-md-6" style="padding-right:0px">
+										<div class="form-group has-feedback">		
+											<input type="text" class="form-control" id="words" name="words" placeholder="Количество слов">
+										</div>										
+									</div>
+									<div class="form-group has-feedback">
+									<?php
+									$query = mysql_query("SELECT * FROM `channel` WHERE `active` = 1");
+									while($row = mysql_fetch_assoc($query)){
+									?>
+										<div class="checkbox-inline">
+										  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" value="<?php echo $row['id']?>"><?php echo $row['name']?></label>
+										</div>									
+									<?php	
+									}
+									?>
+									</div>
+									<div class="form-group has-feedback">	
+										<input type="text" class="form-control" id="price" name="price" placeholder="Стоимость объявления">
+									</div>
+									<div class="form-group has-feedback">
+										<div class="checkbox-inline">	
+											<label><input type="checkbox" name="paid" value="1">Оплаченно</label>
+										</div>
+									</div>																			
+						  		</div>						  		
+						</div>
+						<div class="row">						
 						  <button type="submit" class="btn btn-default">Войти</button>
+						</div>
 					</form>	  				
 	  			</div>
 			</div>
@@ -77,3 +121,6 @@ require_once('template/header.html');
 </div>
 </body>
 </html>
+<script type="text/javascript">
+	$('#simpliest-usage').multiDatesPicker();
+</script>
