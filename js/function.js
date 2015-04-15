@@ -91,6 +91,20 @@ function edit_channel(){
 			return false;
 }
 
+function price(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/price_word.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
 function user_data(a){
 	$.ajax({
 		type: "GET",

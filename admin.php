@@ -21,9 +21,10 @@ require_once('template/header.html');
             <li class="item_menu active"><a class="admin_menu" id="user_add" href="#">Добавить пользователя</a></li>
             <li class="item_menu"><a class="admin_menu" id="user_edit" href="#">Редактировать пользователя</a></li>
             <li class="item_menu"><a class="admin_menu" id="item_add"href="#">Добавить пункт приёма</a></li>
-            <li class="item_menu"><a class="admin_menu" id="item_edit" href="#">Редактировать пункт</a></li>
+            <li class="item_menu"><a class="admin_menu" id="item_edit" href="#">Редактировать пункт приёма</a></li>
             <li class="item_menu"><a class="admin_menu" id="channel_add" href="#">Добавить канал выхода</a></li>
             <li class="item_menu"><a class="admin_menu" id="channel_edit" href="#">Редактировать канал выхода</a></li>
+            <li class="item_menu"><a class="admin_menu" id="price" href="#">Цена за слово</a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
