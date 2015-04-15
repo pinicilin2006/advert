@@ -7,25 +7,6 @@ function onlyDigits(input) {//разрешаем воода только циф�
     } 
 }
 
-function validateDateBirth_1(){
-		var date_birth = $("#date_birth").val();
-		var date = new Date(date_birth.replace(/(\d+).(\d+).(\d+)/, '$2/$1/$3'));
-		//alert(date);	
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
-		var t = new Date();
-		var a = ( t.getFullYear() - y - ((t.getMonth() - --m||t.getDate() - d)<0) );
-		if(a < 18){
-			//alert("Минимально допустимый возраст 18 лет");
-			$("#date_birth_message_1").html("Минимально допустимый возраст 18 лет!");
-			$("#date_birth").val('');
-			$("#date_birth_message_1").focus();
-		}else {
-			$("#date_birth_message_1").html(" ");
-		}
-}
-
 function add_user(){
 			var a = $("#main_form").serialize();
 			$.ajax({
@@ -39,6 +20,77 @@ function add_user(){
 			});
 			return false;
 }
+
+function edit_user(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/user_edit.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
+function add_item(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/item_add.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
+function edit_item(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/item_edit.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
+function add_channel(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/channel_add.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
+function edit_channel(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/channel_edit.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
 function user_data(a){
 	$.ajax({
 		type: "GET",
@@ -50,13 +102,55 @@ function user_data(a){
 		    $('#second_name').val(data.second_name);
 		    $('#third_name').val(data.third_name);
 		    $('#login').val(data.login);
+		    $('#date_birth').val(data.date_birth);
+		    $(".rights").prop("checked", false);
 		    jQuery.each(data.rights, function(i, val) {
-		      	 alert(i);
+		      	$("#right_"+i).prop("checked", true);
 		    });
+		    if(data.active == 1){
+		    	$("#active").prop("checked", true);
+		    }else{
+		    	$("#active").prop("checked", false);
+		    }
 		}
 
 	});
 }
+
+function item_data(){
+	var a = $('#item_id').val();
+	$('#item').val($( "#item_id option:selected" ).text());
+	$.ajax({
+		type: "GET",
+		url: '/ajax/item_data.php',
+		data: 'item_id='+a,
+		success: function(data) {	  
+		    if(data == '1'){
+		    	$("#active").prop("checked", true);
+		    }else{
+		    	$("#active").prop("checked", false);
+		    }
+		}
+	});
+}
+
+function channel_data(){
+	var a = $('#channel_id').val();
+	$('#channel').val($( "#channel_id option:selected" ).text());
+	$.ajax({
+		type: "GET",
+		url: '/ajax/channel_data.php',
+		data: 'channel_id='+a,
+		success: function(data) {	  
+		    if(data == '1'){
+		    	$("#active").prop("checked", true);
+		    }else{
+		    	$("#active").prop("checked", false);
+		    }
+		}
+	});
+}
+
 function button_return(){
 	$('#user_data').slideDown();
 	$('#message_result').html('');

@@ -44,8 +44,8 @@ connect_to_base();
 					  </div>
 
 					  <div class="form-group has-feedback">					    					    
-					      <input type="text" class="form-control input-sm" id="password" name="password" placeholder="Пароль" required>
-					      <p class="help-block"><small>Английский язык, минимум 6 символов, минимум одна буква и одна цифра.</small></p>					    
+					      <input type="text" class="form-control input-sm" id="password" name="password" placeholder="Пароль">
+					      <p class="help-block"><small>Английский язык, минимум 6 символов, минимум одна буква и одна цифра.<br> Если оставить поле пустым, то пароль останется старым.</small></p>					    
 					  </div>
 
 					  <hr align="center" size="2" />
@@ -54,7 +54,7 @@ connect_to_base();
 					  		<?php
 					  		$query=mysql_query("SELECT * FROM `rights` WHERE active = 1 ORDER BY priority");
 					  		while($row = mysql_fetch_assoc($query)){
-								echo "<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"rights[]\" value=\"$row[id]\" >$row[name]</label><br>";
+								echo "<label class=\"checkbox-inline\"><input type=\"checkbox\" class=\"rights\" id=\"right_$row[id]\" name=\"rights[]\" value=\"$row[id]\" >$row[name]</label><br>";
 							}
 							?>    
 					  </div>
@@ -62,11 +62,11 @@ connect_to_base();
 					  <hr align="center" size="2" />
 
 					  <div class="form-group">
-							<label class="checkbox-inline"><input type="checkbox" name="active" value="1" checked>Учётная запись активна</label>	    
+							<label class="checkbox-inline"><input type="checkbox" id="active" name="active" value="1">Учётная запись активна</label>	    
 					  </div>
 
 					  <div class="form-group">
-					      <button type="submit" class="btn btn-default">Добавить пользователя</button>
+					      <button type="submit" class="btn btn-default">Редактировать пользователя</button>
 					  </div>
 					</form>
 	  			</div>
@@ -133,7 +133,7 @@ $('#user').change(function(){
 });
 //проверка данных формы
     $('#main_form').submit(function( event ) {
-    	add_user();
+    	edit_user();
     	return false;
     });	
 </script>
