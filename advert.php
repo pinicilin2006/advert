@@ -69,12 +69,12 @@ require_once('template/header.html');
 						<div class="row">
 								<div class="col-xs-6 col-sm-6 col-md-6">
 									<div class="form-group has-feedback">					    					    
-									      <textarea style="resize: none;" class="form-control calc" rows="11" name="text_advert" placeholder="Текст объявления"></textarea>					    
+									      <textarea style="resize: none;" class="form-control calc text_advert" rows="11" name="text_advert" placeholder="Текст объявления"></textarea>					    
 									</div>
 						  		</div>
 								<div class="col-xs-6 col-sm-6 col-md-6">
 									<div class="form-group has-feedback">				    	
-										<input type="text" class="form-control calc" id="simpliest-usage" placeholder="Даты выходов объявления">
+										<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления">
 									</div>
 									<div class="row" style="padding-left:0px" style="padding-right:0px">
 										<div class="col-xs-6 col-sm-6 col-md-6" >
@@ -85,16 +85,6 @@ require_once('template/header.html');
 												</div>
 											</div>
 										</div>
-										<div class="col-xs-6 col-sm-6 col-md-6">
-											<div class="form-group has-feedback">
-												<div class="input-group">
-													<span class="input-group-addon"><span class="text-danger"><b>Количество слов:</b></span></span>	
-													<input type="text" class="form-control calc" id="words" name="words">
-												</div>
-											</div>										
-										</div>
-									</div>
-									<div class="row">
 										<div class="col-xs-6 col-sm-6 col-md-6">
 											<div class="form-group ">
 											<?php
@@ -110,12 +100,23 @@ require_once('template/header.html');
 											}
 											?>
 											</div>
+										</div>										
+
+									</div>
+									<div class="row">
+										<div class="col-xs-6 col-sm-6 col-md-6">
+											<div class="form-group has-feedback">
+												<div class="input-group">
+													<span class="input-group-addon"><span class="text-danger"><b>Количество слов:</b></span></span>	
+													<input type="text" class="form-control calc" id="words" name="words">
+												</div>
+											</div>										
 										</div>
 										<div class="col-xs-6 col-sm-6 col-md-6">
 											<div class="form-group has-feedback">
 												<div class="input-group">
 												<span class="input-group-addon"><span class="text-danger"><b>Цена:</b></span></span>	
-													<input type="text" class="form-control" id="price" name="price" >
+													<input type="text" class="form-control" id="price" name="price" readonly="readonly">
 												</div>
 											</div>
 										</div>
@@ -130,7 +131,7 @@ require_once('template/header.html');
 											</div>
 										</div>
 										<div class="col-xs-6 col-sm-6 col-md-6" >
-											<button type="submit" class="btn btn-primary btn-block">Сохранить объявление</button>
+											<button type="submit" class="btn btn-danger btn-block">Сохранить объявление</button>
 										</div>
 									</div>																			
 						  		</div>						  		
@@ -149,10 +150,15 @@ require_once('template/header.html');
 </html>
 <script type="text/javascript">
 //календарик
-$('#simpliest-usage').multiDatesPicker({
+$('#released').multiDatesPicker({
 	  onSelect: function() {
     	calc();
+    	num_days();
   }
+});
+//Подсчёт слов
+$(document).on("keyup", ".text_advert", function(){
+	num_words();
 });
 //Подсчёт стоимости
 $(document).on("change", ".calc", function(){

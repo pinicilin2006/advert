@@ -121,6 +121,22 @@ function calc(){
 			return false;
 }
 
+function num_days(){
+			var a = $("#released").val();
+			var arrDays = a.split(',');
+			var num = arrDays.length;
+			$("#days").val(num);
+			return false;
+}
+
+function num_words(){
+			var a = $(".text_advert").val();
+			var arrWords = a.split(' ');
+			var num = arrWords.length;
+			$("#words").val(num);
+			return false;
+}
+
 function user_data(a){
 	$.ajax({
 		type: "GET",
