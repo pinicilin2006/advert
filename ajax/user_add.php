@@ -14,7 +14,7 @@ require_once('../function.php');
 connect_to_base();
 $err_text='';
 foreach($_POST as $key => $val){
-	if($key == 'rights'){
+	if($key == 'rights' || empty($val)){
 		continue;
 	}
 	$$key = mysql_escape_string($val);

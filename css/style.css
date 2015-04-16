@@ -22,3 +22,11 @@ table.ui-datepicker-calendar {border-collapse: separate;}
 /* begin: jQuery UI Datepicker hide datepicker helper */
 #ui-datepicker-div {display:none;}
 /* end: jQuery UI Datepicker hide datepicker helper */
+.hr_red {
+  margin-top: 0px;
+  margin-bottom: 10px;
+  border: 0;  
+  color: red;
+  background-color: #ca0000;
+  height: 2px;
+}

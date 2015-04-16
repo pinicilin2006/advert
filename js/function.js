@@ -105,6 +105,22 @@ function price(){
 			return false;
 }
 
+function calc(){
+			$("#price").val('');
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/calc.php',
+			  data: a,
+			  success: function(data) {
+			  	if(data !=''){
+			  		$("#price").val(data);
+			  	}
+			  }
+			});
+			return false;
+}
+
 function user_data(a){
 	$.ajax({
 		type: "GET",
