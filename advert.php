@@ -77,15 +77,26 @@ require_once('template/header.html');
 										<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления">
 									</div>
 									<div class="row" style="padding-left:0px" style="padding-right:0px">
+										<div class="col-xs-6 col-sm-6 col-md-6">
+											<div class="form-group has-feedback">
+												<div class="input-group">
+													<span class="input-group-addon"><span class="text-danger"><b>Всего слов:</b></span></span>	
+													<input type="text" class="form-control calc" id="words" name="words">
+												</div>
+											</div>										
+										</div>									
+									
 										<div class="col-xs-6 col-sm-6 col-md-6" >
 											<div class="form-group has-feedback">	
 												<div class="input-group">
-													<span class="input-group-addon"><span class="text-danger"><b>Количество дней:</b></span></span>	
+													<span class="input-group-addon"><span class="text-danger"><b>Всего дней:</b></span></span>	
 													<input type="text" class="form-control calc" id="days" name="days">
 												</div>
 											</div>
-										</div>
-										<div class="col-xs-6 col-sm-6 col-md-6">
+										</div>										
+									</div>
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12">
 											<div class="form-group ">
 											<?php
 											$query = mysql_query("SELECT * FROM views_ads where active = 1");
@@ -100,30 +111,21 @@ require_once('template/header.html');
 											}
 											?>
 											</div>
-										</div>										
-
-									</div>
-									<div class="row">
-										<div class="col-xs-6 col-sm-6 col-md-6">
-											<div class="form-group has-feedback">
-												<div class="input-group">
-													<span class="input-group-addon"><span class="text-danger"><b>Количество слов:</b></span></span>	
-													<input type="text" class="form-control calc" id="words" name="words">
-												</div>
-											</div>										
 										</div>
-										<div class="col-xs-6 col-sm-6 col-md-6">
+									</div>
+									<div class="row" style="padding-left:0px" style="padding-right:0px">
+										<div class="col-xs-6 col-sm-6 col-md-6" >
 											<div class="form-group has-feedback">
 												<div class="input-group">
 												<span class="input-group-addon"><span class="text-danger"><b>Цена:</b></span></span>	
 													<input type="text" class="form-control" id="price" name="price" readonly="readonly">
 												</div>
 											</div>
-										</div>
+										</div>										
 									</div>
 									<div class="row">
 									<hr class="hr_red">
-										<div class="col-xs-6 col-sm-6 col-md-6" >
+										<div class="col-xs-6 col-sm-6 col-md-6">
 											<div class="form-group has-feedback" style="padding-top:2%">
 												<div class="checkbox-inline">	
 													<label><input type="checkbox" name="paid" value="1">Оплаченно</label>
@@ -159,6 +161,7 @@ $('#released').multiDatesPicker({
 //Подсчёт слов
 $(document).on("keyup", ".text_advert", function(){
 	num_words();
+	calc();
 });
 //Подсчёт стоимости
 $(document).on("change", ".calc", function(){
