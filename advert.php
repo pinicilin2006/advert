@@ -25,7 +25,7 @@ require_once('template/header.html');
 						<div class="row">
 								<div class="col-xs-5 col-sm-5 col-md-5">
 									<div class="form-group">
-									    <select class="form-control" name="item">
+									    <select class="form-control" name="item" required>
 									    <option value="" disabled selected>Пункт приёма</option>
 									    <?php					  		
 								  		$query=mysql_query("SELECT * FROM `item` WHERE `active` = 1 ORDER BY name");
@@ -57,7 +57,7 @@ require_once('template/header.html');
 						<div class="row">
 								<div class="col-xs-8 col-sm-8 col-md-8">
 									<div class="form-group has-feedback">					    					    
-									      <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Заказчик (Фамилия / Организация)">					    
+									      <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Заказчик (Фамилия / Организация)" required>					    
 									</div>
 						  		</div>
 								<div class="col-xs-4 col-sm-4 col-md-4">
@@ -69,19 +69,19 @@ require_once('template/header.html');
 						<div class="row">
 								<div class="col-xs-6 col-sm-6 col-md-6">
 									<div class="form-group has-feedback">					    					    
-									      <textarea style="resize: none;" class="form-control calc text_advert" rows="11" name="text_advert" placeholder="Текст объявления"></textarea>					    
+									      <textarea style="resize: none;" class="form-control calc text_advert" rows="11" name="text_advert" placeholder="Текст объявления" required></textarea>					    
 									</div>
 						  		</div>
 								<div class="col-xs-6 col-sm-6 col-md-6">
 									<div class="form-group has-feedback">				    	
-										<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления">
+										<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления" required>
 									</div>
 									<div class="row" style="padding-left:0px" style="padding-right:0px">
 										<div class="col-xs-6 col-sm-6 col-md-6">
 											<div class="form-group has-feedback">
 												<div class="input-group">
 													<span class="input-group-addon"><span class="text-danger"><b>Всего слов:</b></span></span>	
-													<input type="text" class="form-control calc" id="words" name="words">
+													<input type="text" class="form-control calc" id="words" name="words" required>
 												</div>
 											</div>										
 										</div>									
@@ -90,7 +90,7 @@ require_once('template/header.html');
 											<div class="form-group has-feedback">	
 												<div class="input-group">
 													<span class="input-group-addon"><span class="text-danger"><b>Всего дней:</b></span></span>	
-													<input type="text" class="form-control calc" id="days" name="days">
+													<input type="text" class="form-control calc" id="days" name="days" required>
 												</div>
 											</div>
 										</div>										
@@ -128,7 +128,7 @@ require_once('template/header.html');
 										<div class="col-xs-6 col-sm-6 col-md-6">
 											<div class="form-group has-feedback" style="padding-top:2%">
 												<div class="checkbox-inline">	
-													<label><input type="checkbox" name="paid" value="1">Оплаченно</label>
+													<label><input type="checkbox" name="paid" value="1">Оплачено</label>
 												</div>
 											</div>
 										</div>
@@ -141,7 +141,7 @@ require_once('template/header.html');
 					</form>	  				
 	  			</div>
 			</div>
-			<div id="message"></div>
+			<div id="message_result"></div>
 		</div>
 	</div>
 </div>
@@ -153,10 +153,11 @@ require_once('template/header.html');
 <script type="text/javascript">
 //календарик
 $('#released').multiDatesPicker({
-	  onSelect: function() {
-    	calc();
-    	num_days();
-  }
+		minDate: 0,
+	  	onSelect: function() {
+	    	num_days();
+	    	calc();
+  		}
 });
 //Подсчёт слов
 $(document).on("keyup", ".text_advert", function(){
@@ -164,7 +165,12 @@ $(document).on("keyup", ".text_advert", function(){
 	calc();
 });
 //Подсчёт стоимости
-$(document).on("change", ".calc", function(){
+$(document).on("change keyup", ".calc", function(){
 	calc();
 });
+//проверка данных формы
+    $('#main_form').submit(function( event ) {
+    	add_advert();
+    	return false;
+    });	
 </script>
