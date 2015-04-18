@@ -24,6 +24,9 @@ if(isset($_POST['channel'])){
 	$channel = $_POST['channel'];
 }
 $err_text = '';
+if(!$md5_id){
+	$err_text .= "<li class=\"text-danger\">Не указан md5_id</li>";
+}
 if(!$item){
 	$err_text .= "<li class=\"text-danger\">Не указан пункт приёма</li>";
 }
@@ -36,6 +39,9 @@ if(!$client_name){
 if(!$text_advert){
 	$err_text .= "<li class=\"text-danger\">Не указан текст объявления</li>";
 }
+if(!$words){
+	$err_text .= "<li class=\"text-danger\">Не указан текст объявления</li>";
+}
 if(!$released){
 	$err_text .= "<li class=\"text-danger\">Не указана дата выхода</li>";
 }
@@ -43,7 +49,7 @@ if(!$days){
 	$err_text .= "<li class=\"text-danger\">Не указано количество дней</li>";
 }
 if(!$view_ads){
-	$err_text .= "<li class=\"text-danger\">Не указано количество дней</li>";
+	$err_text .= "<li class=\"text-danger\">Не указан вид объявления</li>";
 }
 if(!$_SESSION['calculation']){
 	$err_text .= "<li class=\"text-danger\">Отсутствует данные расчёта</li>";
@@ -54,6 +60,9 @@ if(isset($days) && isset($released)){
 	if($num_released != $days){
 		$err_text .= "<li class=\"text-danger\">Не совпадают даты выходов с количеством дней</li>";
 	}
+}
+if(mysql_num_rows(mysql_query("SELECT * FROM `advert` WHERE `md5_id` = '".$md5_id."'"))>0){
+	$err_text .= "<li class=\"text-danger\">Данное объявление уже добавленно ранее в базу данных.</li>";
 }
 if(!empty($err_text)){
 	echo "<br><p><ol>$err_text</ol></p><button type=\"button\" class=\"btn btn-danger\" id=\"button_return\" onclick=\"button_return();\">Назад</button>";
@@ -82,7 +91,7 @@ if($client_data){
 		exit();
 	}
 }
-$query = "INSERT INTO `advert` (id_client,text_advert,item,view_ads,price,paid,who_add) VALUES('".$id_client."','".$text_advert."','".$item."','".$view_ads."','".$price['summa']."','".$paid."','".$_SESSION['user_id']."')";
+$query = "INSERT INTO `advert` (id_client,text_advert,item,view_ads,words,price,calc_id,paid,who_add,md5_id) VALUES('".$id_client."','".$text_advert."','".$item."','".$view_ads."','".$words."','".$price['summa']."','".$_SESSION['calculation']."','".$paid."','".$_SESSION['user_id']."','".$md5_id."')";
 //Добавляем объявление в базу
 if(mysql_query($query)){
 	$id_advert = mysql_insert_id();
