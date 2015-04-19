@@ -5,6 +5,10 @@ if(!isset($_SESSION['user_id'])){
 	header("Location: login.php");
 	exit;
 }
+if(!isset($_SESSION['access']['1']) || !isset($_SESSION['access']['3'])){
+	header("Location: advert_list.php");
+	exit;
+}
 // echo "<pre>";
 // print_r($_SESSION);
 // echo "</pre>";

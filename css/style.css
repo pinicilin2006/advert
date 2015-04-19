@@ -30,6 +30,14 @@ table.ui-datepicker-calendar {border-collapse: separate;}
   background-color: #ca0000;
   height: 2px;
 }
+.hr_red2 {
+  margin-top: 10px;
+  margin-bottom: px;
+  border: 0;  
+  color: red;
+  background-color: #ca0000;
+  height: 2px;
+}
 .form-control:focus {
   border-color: #ca0000;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);

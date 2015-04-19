@@ -5,13 +5,13 @@ connect_to_base();
 //require_once('template/header.html');
 
 ?>
-<h2 class="sub-header"><em>Редактировать канал продаж</em></h2>
+<h2 class="sub-header"><em>Редактировать канал выхода</em></h2>
 <div class="table-responsive"> 	
 	  			<div class="panel-body" id="user_data">
 					<form class="form-horizontal col-sm-4 col-sm-offset-1" role="form" id="main_form">									
 	  				<div class="form-group" id="channel_select">
 					  		<select class="form-control" name="channel_id" id="channel_id" required>
-					  		<option value="" disabled selected>Выберите канал продаж</option>
+					  		<option value="" disabled selected>Выберите канал выхода</option>
 					  		<?php
 					  		$query=mysql_query("SELECT * FROM `channel` ORDER BY `name`");
 					  		while($row = mysql_fetch_assoc($query)){

@@ -46,7 +46,7 @@ mysql_query("INSERT INTO `log_login` (ip, browser, login) VALUES ('".$_SERVER['R
 // 	header("Location: ../osago.php");
 // 	exit;
 // }
-header("Location: ../index.php");
+header("Location: ../advert_list.php");
 exit;		
 }
 ?>

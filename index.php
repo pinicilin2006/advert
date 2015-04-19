@@ -4,6 +4,8 @@ if(!isset($_SESSION['user_id'])){
 	header("Location: login.php");
 	exit;
 }
+header("Location: advert_list.php");
+exit;
 // echo "<pre>";
 // print_r($_SESSION);
 // echo "</pre>";
