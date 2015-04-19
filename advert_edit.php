@@ -34,11 +34,11 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
-	    			<h3 class="panel-title">Форма добавления объявления</h3>
+	    			<h3 class="panel-title">Форма редактирования объявления №: <span class="text-danger"><b><?php echo $advert_data['id']?></b></span> от <span class="text-danger"><b><?php echo date("d.m.Y", strtotime($advert_data['date_create']))?></b></span></h3>
 	  			</div>
 	  			<div class="panel-body" id="user_data">
 					<form role="form" id="main_form">
-					<input type="hidden" name="md5_id" value="<?php echo md5(date("F j, Y, g:i:s "))?>">
+					<input type="hidden" name="md5_id" value="<?php echo $advert_data['md5_id']?>">
 						<div class="row">
 								<div class="col-xs-5 col-sm-5 col-md-5">
 									<div class="form-group">

@@ -105,6 +105,20 @@ function add_advert(){
 			return false;
 }
 
+function edit_advert(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/ad_edit.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
 function price(){
 			var a = $("#main_form").serialize();
 			$.ajax({

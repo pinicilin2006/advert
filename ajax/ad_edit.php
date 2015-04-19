@@ -61,13 +61,15 @@ if(isset($days) && isset($released)){
 		$err_text .= "<li class=\"text-danger\">Не совпадают даты выходов с количеством дней</li>";
 	}
 }
-if(mysql_num_rows(mysql_query("SELECT * FROM `advert` WHERE `md5_id` = '".$md5_id."'"))>0){
-	$err_text .= "<li class=\"text-danger\">Данное объявление уже добавленно ранее в базу данных.</li>";
+$query_advert = mysql_query("SELECT * FROM `advert` WHERE `md5_id` = '".$md5_id."'");
+if(mysql_num_rows($query_advert)<1){
+	$err_text .= "<li class=\"text-danger\">Редактируемое объявление не найдено в базе данных.</li>";
 }
 if(!empty($err_text)){
 	echo "<br><p><ol>$err_text</ol></p><button type=\"button\" class=\"btn btn-danger\" id=\"button_return\" onclick=\"button_return();\">Назад</button>";
 	exit();
 }
+$advert_data_old = mysql_fetch_assoc($query_advert);
 if(!$paid){
 	$paid = 0;
 }
@@ -91,13 +93,25 @@ if($client_data){
 		exit();
 	}
 }
-$query = "INSERT INTO `advert` (id_client,text_advert,item,view_ads,words,price,calc_id,paid,who_add,md5_id) VALUES('".$id_client."','".$text_advert."','".$item."','".$view_ads."','".$words."','".$price['summa']."','".$_SESSION['calculation']."','".$paid."','".$_SESSION['user_id']."','".$md5_id."')";
-//Добавляем объявление в базу
+//$query = "REPLACE INTO `advert` (id_client,text_advert,item,view_ads,words,price,calc_id,paid,who_add,md5_id) VALUES('".$id_client."','".$text_advert."','".$item."','".$view_ads."','".$words."','".$price['summa']."','".$_SESSION['calculation']."','".$paid."','".$_SESSION['user_id']."','".$md5_id."')";
+$id_advert = $advert_data_old['id'];
+$query = "UPDATE `advert` SET id_client = $id_client, text_advert = '".$text_advert."', item = '".$item."', view_ads = '".$view_ads."', words = '".$words."', price  = '".$price['summa']."', calc_id = '".$_SESSION['calculation']."', paid  = '".$paid."', edit  = 1 WHERE `id` = '".$id_advert."'";
+//Обновляем объявление в базе
 if(mysql_query($query)){
-	$id_advert = mysql_insert_id();
+	//если успешно то записываем старый текст в лог
+	mysql_query("INSERT INTO `old_advert` (id_advert,text_advert,who_edit) VALUES('".$id_advert."','".$text_advert."','".$_SESSION['user_id']."')");
 } else {
 		echo "<p class=\"text-danger\">Произошла ошибка при добавление объявления в базу данных.</p>";
 		exit();	
+}
+//Удаляем старые каналы выхода и старые даты выхода
+if(!mysql_query("DELETE FROM channel_advert WHERE id_advert = '".$id_advert."'")){
+		echo "<p class=\"text-danger\">Произошла ошибка при удаление старых каналов выхода из базы данных.</p>";
+		exit();			
+}
+if(!mysql_query("DELETE FROM released_advert WHERE id_advert = '".$id_advert."'")){
+		echo "<p class=\"text-danger\">Произошла ошибка при удаление старых дат выхода из базы данных.</p>";
+		exit();			
 }
 //Добавляем каналы выхода для этого объявления
 foreach ($channel as $key => $value) {
@@ -119,5 +133,5 @@ foreach ($released as $key => $value) {
 		exit();			
 	}
 }
-echo '<div class="alert alert-success text-center">Объявление успешно добавлено!</div>';
+echo '<div class="alert alert-success text-center">Объявление успешно отредактировано!</div>';
 ?>
