@@ -160,8 +160,13 @@ function num_days(){
 function num_words(){
 			var a = $(".text_advert").val();
 			var arrWords = a.split(' ');
-			var num = arrWords.length;
-			$("#words").val(num);
+			var i = 0;
+			for(var k in arrWords){
+				if(arrWords[k].length > 2){
+					i++;
+				}
+			}
+			$("#words").val(i);
 			return false;
 }
 
