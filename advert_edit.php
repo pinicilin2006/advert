@@ -152,6 +152,9 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 												<div class="checkbox-inline">	
 													<label><input type="checkbox" name="paid" value="1" <?php echo ($advert_data['paid'] == 1 ? ' checked' : '')?>>Оплачено</label>
 												</div>
+<!-- 												<div class="checkbox-inline">	
+													<label><input type="checkbox" name="offsetting" value="1" <?php echo ($advert_data['offsetting'] == 1 ? ' checked' : '')?>>Взаимозачёт</label>
+												</div> -->													
 											</div>
 										</div>
 										<div class="col-xs-6 col-sm-6 col-md-6" >

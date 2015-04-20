@@ -137,7 +137,10 @@ require_once('template/header.html');
 												<div class="checkbox-inline">	
 													<label><input type="checkbox" name="paid" value="1">Оплачено</label>
 												</div>
-											</div>
+<!-- 												<div class="checkbox-inline">	
+													<label><input type="checkbox" name="offsetting" value="1">Взаимозачёт</label>
+												</div>	 -->											
+											</div>										
 										</div>
 										<div class="col-xs-6 col-sm-6 col-md-6" >
 											<button type="submit" class="btn btn-danger btn-block">Сохранить объявление</button>
