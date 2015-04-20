@@ -124,17 +124,31 @@ echo '</ul>
 			    	</div>				
 	  			</div>
 	  			<hr class="hr_red">
-	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/print/print.php" target="_blank">
+	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/playlist.php" target="_blank">
+							<div class="form-group">					    					    
+							      <input type="hidden" name="date_released" value="<?php echo $_POST['date_released'] ?>">					    
+							</div>
+							<div class="form-group">					    					    
+							      <input type="hidden" name="query_text" value="<?php echo $query_text ?>">					    
+							</div>
+							<?php
+							if(isset($_POST['date_released']) && !empty($_POST['date_released'])){
+							?>							
+							<div class="form-group">
+								<button type="submit" class="btn btn-block">Сформировать файл для выгрузки в программу</button>
+							</div>
+							<?php
+							}
+							?>																							
+	  				</form>
+	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/excel/excel.php" target="_blank">
 							<div class="form-group">					    					    
 							      <input type="hidden" name="query_text" value="<?php echo $query_text ?>">					    
 							</div>
 							<div class="form-group">
-								<button type="submit" class="btn btn-block">Сформировать файл для выгрузки в программу</button>
-							</div>
-							<div class="form-group">
 								<button type="submit" class="btn btn-block">ЭКСПОРТ в Exel</button>
 							</div>																									
-	  				</form>
+	  				</form>	  				
 	  			</div>	  			
 			</div>
 		</div>
