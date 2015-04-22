@@ -45,7 +45,7 @@ connect_to_base();
 					  </div>
 
 					  <div class="form-group has-feedback">					    					    
-					      <input type="text" class="form-control input-sm" id="password" name="password" value='<?php echo generate_password(8)?>' placeholder="Пароль" required>				    
+					      <input type="text" class="form-control input-sm" id="password" name="password" placeholder="Пароль">				    
 					  </div>
 
 					  <div class="form-group has-feedback">					    					    
@@ -97,7 +97,7 @@ connect_to_base();
 					  <hr align="center" size="2" />
 
 					  <div class="form-group">
-							<label class="checkbox-inline"><input type="checkbox" name="active" value="1" checked>Учётная запись активна</label>	    
+							<label class="checkbox-inline"><input type="checkbox" id="active" name="active" value="1" checked>Учётная запись активна</label>	    
 					  </div>
 
 					  <div class="form-group">

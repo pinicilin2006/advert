@@ -22,18 +22,18 @@ require_once('template/header.html');
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
-	    			<h3 class="panel-title">Форма добавления объявления</h3>
+	    			<h3 class="panel-title"><b><span class="text-danger">ПРИЁМ ОБЪЯВЛЕНИЯ</span></b></h3>
 	  			</div>
 	  			<div class="panel-body" id="user_data">
 					<form role="form" id="main_form">
 					<input type="hidden" name="md5_id" value="<?php echo md5(date("F j, Y, g:i:s "))?>">
 						<div class="row">
-								<div class="col-xs-5 col-sm-5 col-md-5">
+								<div class="col-xs-2 col-sm-2 col-md-2 col-xs-offset-10 col-sm-offset-10 col-md-offset-10">
 									<div class="form-group">
 									    <select class="form-control" name="item" id="item" required>
-									    <option value="" disabled selected>Пункт приёма</option>
+									   
 									    <?php					  		
-								  		$query=mysql_query("SELECT * FROM `item` WHERE `active` = 1 ORDER BY name");
+								  		$query = mysql_query("SELECT * FROM `user_items`,`item` WHERE user_items.item = item.id AND user_items.user_id = $_SESSION[user_id] AND `active` = 1 ORDER BY name");
 								  		while($row = mysql_fetch_assoc($query)){
 											echo "<option value=\"$row[id]\" ";
 											echo ">$row[name]";
@@ -42,112 +42,104 @@ require_once('template/header.html');
 										?> 						    
 									    </select>
 									</div>
+								</div>								
+						</div>
+						<div class="row">
+							<!-- левая половинка -->
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<div class="row">
+									<div class="col-xs-8 col-sm-8 col-md-8">
+										<div class="form-group has-feedback">					    					    
+										      <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Заказчик (Фамилия / Организация)" required>					    
+										</div>
+							  		</div>
+									<div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:0px">
+										<div class="form-group has-feedback">					    					    
+										      <input type="text" class="form-control" id="client_phone" name="client_phone" placeholder="Телефон заказчика">					    
+										</div>
+							  		</div>									
 								</div>
-								<div class="col-xs-7 col-sm-7 col-md-7" >
-											<div class="form-group has-feedback">
-											<?php
-											$query = mysql_query("SELECT * FROM `channel` WHERE `active` = 1");
-											$i = 0;
-											while($row = mysql_fetch_assoc($query)){
-												$i++;
-											?>
-												<div class="checkbox-inline">
-												  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" value="<?php echo $row['id']?>" <?php echo ($i == 1 ? ' checked' : '')?>><?php echo $row['name']?></label>
-												</div>									
-											<?php	
-											}
-											?>
-											</div>
-										</div>								
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12" style="padding-right:0px">
+										<div class="form-group has-feedback">					    					    
+										      <textarea style="resize: none;" class="form-control calc text_advert" rows="3" id="ad" name="text_advert" placeholder="Текст объявления" required></textarea>					    
+										</div>
+									</div>									
+								</div>
+							</div>
+							<!-- конец левой половины -->
+							<!-- правая половинка -->
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12" >
+												<?php
+												$query = mysql_query("SELECT * FROM `channel`,`user_channels` WHERE user_channels.channel = channel.id AND user_channels.user_id = $_SESSION[user_id] AND `active` = 1 ORDER BY name");
+												$i = 0;
+												while($row = mysql_fetch_assoc($query)){
+													$i++;
+													if($i == 1 || $i == 4 || $i == 7){
+														echo '<div class="col-xs-4 col-sm-4 col-md-4" >';
+														echo '<div class="form-group has-feedback">';
+													}
+												?>										
+													<div class="checkbox" style="margin-bottom:6px;margin-top:0px">
+													  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" value="<?php echo $row['id']?>"><b><span class="text-danger"><?php echo $row['name']?></span></b></label>
+													</div>									
+												<?php
+													if($i == 3 || $i == 6 || $i == 9){
+														echo '</div></div>';
+													}
+												}
+												?>								
+									</div>									
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12" >
+										<div class="form-group has-feedback">				    	
+											<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления" required>
+										</div>
+									</div>									
+								</div>
+							</div>
+							<!-- конец правой половины -->														
+						</div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12" >
+								<div class="col-xs-3 col-sm-3 col-md-3" style="padding-left:0px">
+									<div class="form-group has-feedback">
+										<div class="input-group">
+											<span class="input-group-addon"><span class="text-danger"><b>Всего слов:</b></span></span>	
+											<input type="text" class="form-control calc" id="words" name="words" required>
+										</div>
+									</div>										
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3" style="padding-right:0px">
+									<div class="form-group has-feedback">
+										<div class="input-group">
+											<span class="input-group-addon"><span class="text-danger"><b>Цена за день:</b></span></span>	
+											<input type="text" class="form-control calc" id="price_day" name="price_day" required>
+										</div>
+									</div>										
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3" >
+									<div class="form-group has-feedback">	
+										<div class="input-group">
+											<span class="input-group-addon"><span class="text-danger"><b>Всего дней:</b></span></span>	
+											<input type="text" class="form-control calc" id="days" name="days" required>
+										</div>
+									</div>
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3" style="padding-right:0px">
+									<div class="form-group has-feedback">
+										<div class="input-group">
+											<span class="input-group-addon"><span class="text-danger"><b>Скидка:</b></span></span>	
+											<input type="text" class="form-control calc" id="price_day" name="price_day" required>
+										</div>
+									</div>										
+								</div>																																	
+							</div>
+						</div>
 
-						</div>
-						<div class="row">
-								<div class="col-xs-8 col-sm-8 col-md-8">
-									<div class="form-group has-feedback">					    					    
-									      <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Заказчик (Фамилия / Организация)" required>					    
-									</div>
-						  		</div>
-								<div class="col-xs-4 col-sm-4 col-md-4">
-									<div class="form-group has-feedback">					    					    
-									      <input type="text" class="form-control" id="client_phone" name="client_phone" placeholder="Телефон заказчика">					    
-									</div>
-						  		</div>						  		
-						</div>
-						<div class="row">
-								<div class="col-xs-6 col-sm-6 col-md-6">
-									<div class="form-group has-feedback">					    					    
-									      <textarea style="resize: none;" class="form-control calc text_advert" rows="11" id="ad" name="text_advert" placeholder="Текст объявления" required></textarea>					    
-									</div>
-						  		</div>
-								<div class="col-xs-6 col-sm-6 col-md-6">
-									<div class="form-group has-feedback">				    	
-										<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления" required>
-									</div>
-									<div class="row" style="padding-left:0px" style="padding-right:0px">
-										<div class="col-xs-6 col-sm-6 col-md-6">
-											<div class="form-group has-feedback">
-												<div class="input-group">
-													<span class="input-group-addon"><span class="text-danger"><b>Всего слов:</b></span></span>	
-													<input type="text" class="form-control calc" id="words" name="words" required>
-												</div>
-											</div>										
-										</div>									
-									
-										<div class="col-xs-6 col-sm-6 col-md-6" >
-											<div class="form-group has-feedback">	
-												<div class="input-group">
-													<span class="input-group-addon"><span class="text-danger"><b>Всего дней:</b></span></span>	
-													<input type="text" class="form-control calc" id="days" name="days" required>
-												</div>
-											</div>
-										</div>										
-									</div>
-									<div class="row">
-										<div class="col-xs-12 col-sm-12 col-md-12">
-											<div class="form-group ">
-											<?php
-											$query = mysql_query("SELECT * FROM views_ads where active = 1");
-											$i = 0;
-											while($row = mysql_fetch_assoc($query)){
-												$i++;
-											?>
-												<div class="radio-inline" style="padding-top:2%">
-												  	<span class="text-danger"><label style="font-weight:normal"><input type="radio" class="calc" name="view_ads" value="<?php echo $row['id']?>" <?php echo ($i == 1 ? ' checked' : '')?>><b><?php echo $row['name']?></b></label></span>
-												</div>
-											<?php
-											}
-											?>
-											</div>
-										</div>
-									</div>
-									<div class="row" style="padding-left:0px" style="padding-right:0px">
-										<div class="col-xs-6 col-sm-6 col-md-6" >
-											<div class="form-group has-feedback">
-												<div class="input-group">
-												<span class="input-group-addon"><span class="text-danger"><b>Цена:</b></span></span>	
-													<input type="text" class="form-control" id="price" name="price" readonly="readonly">
-												</div>
-											</div>
-										</div>										
-									</div>
-									<div class="row">
-									<hr class="hr_red">
-										<div class="col-xs-6 col-sm-6 col-md-6">
-											<div class="form-group has-feedback" style="padding-top:2%">
-												<div class="checkbox-inline">	
-													<label><input type="checkbox" name="paid" value="1">Оплачено</label>
-												</div>
-<!-- 												<div class="checkbox-inline">	
-													<label><input type="checkbox" name="offsetting" value="1">Взаимозачёт</label>
-												</div>	 -->											
-											</div>										
-										</div>
-										<div class="col-xs-6 col-sm-6 col-md-6" >
-											<button type="submit" class="btn btn-danger btn-block">Сохранить объявление</button>
-										</div>
-									</div>																			
-						  		</div>						  		
-						</div>
 					</form>	  				
 	  			</div>
 			</div>

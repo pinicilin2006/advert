@@ -21,17 +21,17 @@ foreach($_POST as $key => $val){
 	$$key = mysql_escape_string($val);
 }
 $err_text = '';
-if(!$channel_id){
-	$err_text .= "<li class=\"text-danger\">Отсутствует id канала</li>";
+if(!$discount_id){
+	$err_text .= "<li class=\"text-danger\">Отсутствует id скидки</li>";
 }
-if(!$channel){
-	$err_text .= "<li class=\"text-danger\">Отсутствует название канала</li>";
+if(!$name){
+	$err_text .= "<li class=\"text-danger\">Отсутствует название скидки</li>";
 }
-if(!$price){
-	$err_text .= "<li class=\"text-danger\">Отсутствует цена за слово</li>";
+if(!$percent){
+	$err_text .= "<li class=\"text-danger\">Отсутствует размер скидки</li>";
 }
-if(mysql_num_rows(mysql_query("SELECT * FROM `channel` WHERE `name` = '".$channel."' AND `id` <> $channel_id"))>0){
-	$err_text .= "<li class=\"text-danger\">Канал с таким именем был добавлен ранее.</li>";
+if(mysql_num_rows(mysql_query("SELECT * FROM `discount` WHERE `name` = '".$discount."' AND `id` <> $discount_id"))>0){
+	$err_text .= "<li class=\"text-danger\">Скидка с таким именем была добавлена ранее.</li>";
 }
 if(!empty($err_text)){
 	echo "<br><p><ol>$err_text</ol></p><button type=\"button\" class=\"btn btn-danger\" id=\"button_return\" onclick=\"button_return();\">Назад</button>";
@@ -41,10 +41,10 @@ if(!$active){
 	$active = 0;
 }
 //Обновляем в базе данных
-if(mysql_query("UPDATE `channel` SET `name` = '".$channel."',`price` = '".$price."', `active` = '".$active."', who_edit = '".$_SESSION['user_id']."' WHERE `id` = '".$channel_id."'")){
-	echo "<p class=\"text-success\">Канал выхода успешно изменён.</p>";
+if(mysql_query("UPDATE `discount` SET `name` = '".$name."',`percent` = '".$percent."', `active` = '".$active."', who_edit = '".$_SESSION['user_id']."' WHERE `id` = '".$discount_id."'")){
+	echo "<p class=\"text-success\">Скидка успешно изменёна.</p>";
 }else{
-	echo "<p class=\"text-danger\">Произошла ошибка при изменение канала выхода.</p>";
+	echo "<p class=\"text-danger\">Произошла ошибка при изменение скидки.</p>";
 }
 //echo "<br><p><ol>$err_text</ol></p><p class=\"text-center\"><button type=\"button\" class=\"btn btn-danger\" id=\"button_return\" onclick=\"button_return();\">Назад</button></p>";		
 exit();

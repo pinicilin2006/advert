@@ -83,7 +83,7 @@ connect_to_base();
 					  <hr align="center" size="2" />
 
 					  <div class="form-group">
-							<label class="checkbox-inline"><input type="checkbox" name="active" value="1" checked>Учётная запись активна</label>	    
+							<label class="checkbox-inline"><input type="checkbox" id="active" name="active" value="1" checked>Учётная запись активна</label>	    
 					  </div>
 
 					  <div class="form-group">
