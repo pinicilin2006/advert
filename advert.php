@@ -83,7 +83,7 @@ require_once('template/header.html');
 													}
 												?>										
 													<div class="checkbox" style="margin-bottom:6px;margin-top:0px">
-													  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" value="<?php echo $row['id']?>"><b><span class="text-danger"><?php echo $row['name']?></span></b></label>
+													  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" class="calc" value="<?php echo $row['id']?>"><b><span class="text-danger"><?php echo $row['name']?></span></b></label>
 													</div>									
 												<?php
 													if($i == 3 || $i == 6 || $i == 9){
@@ -133,12 +133,56 @@ require_once('template/header.html');
 									<div class="form-group has-feedback">
 										<div class="input-group">
 											<span class="input-group-addon"><span class="text-danger"><b>Скидка:</b></span></span>	
-											<input type="text" class="form-control calc" id="price_day" name="price_day" required>
+											    <select class="form-control calc" name="discount" id="discount" required>											   
+											    <?php					  		
+										  		$query = mysql_query("SELECT * FROM discount ORDER BY name");
+										  		while($row = mysql_fetch_assoc($query)){
+													echo "<option value=\"$row[id]\" ";
+													echo ">$row[name]%";
+													echo "</option>";
+												}
+												?> 						    
+											    </select>											
 										</div>
 									</div>										
 								</div>																																	
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12" >
+								<div class="col-xs-6 col-sm-6 col-md-6" style="padding-left:0px;padding-right:0px">
+									<div class="form-group has-feedback">					    					    
+									      <textarea style="resize: none;" class="form-control" rows="1" id="comment" name="comment" placeholder="Комментарий" required></textarea>					    
+									</div>
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3">
+									<div class="form-group has-feedback" style="padding-top:4%">
+										<div class="checkbox-inline">	
+											<label><input type="checkbox" class="calc" name="speed" value="1"><b><span class="text-danger">СРОЧНОЕ!</span></b></label>
+										</div>											
+									</div>										
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3" style="padding-right:0px">
+									<div class="form-group has-feedback">
+										<div class="input-group">
+										<span class="input-group-addon"><span class="text-danger"><b>СУММА К ОПЛАТЕ:</b></span></span>	
+											<input type="text" class="form-control" id="price" name="price" readonly="readonly">
+										</div>
+									</div>
+								</div>																							
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12" >
+								<hr class="hr_red">
+									<div class="form-group has-feedback pull-right">
+										<div class="checkbox-inline" >	
+											<label><input type="checkbox" name="paid" value="1"><b><span class="text-danger">ПРИНЯТО</span></b></label>
+										</div>
+										&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger">Сохранить объявление</button>
+									</div>								
+							</div>
+						</div>						
 
 					</form>	  				
 	  			</div>
