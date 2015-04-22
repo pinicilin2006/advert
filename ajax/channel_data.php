@@ -12,6 +12,5 @@ if(mysql_num_rows($query) == 0){
 	exit;   
 }
 $channel_data = mysql_fetch_assoc($query);
-echo $channel_data['active'];
-
+echo json_encode($channel_data);
 ?>

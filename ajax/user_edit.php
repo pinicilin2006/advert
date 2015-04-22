@@ -14,7 +14,7 @@ require_once('../function.php');
 connect_to_base();
 $err_text='';
 foreach($_POST as $key => $val){
-	if($key == 'rights' || empty($val)){
+	if($key == 'rights' || $key == 'channels' || $key == 'items' || empty($val)){
 		continue;
 	}
 	$$key = mysql_escape_string($val);
@@ -30,9 +30,6 @@ if(!$first_name && !$second_name && !$third_name){
 
 if(!$login){
 	$err_text .= "<li class=\"text-danger\">Не указан логин</li>";
-}
-if(isset($password) && (strlen($password) < 6 || !preg_match("/([0-9]+)/", $password) || !preg_match("/([a-zA-Z]+)/", $password))){
-	$err_text .= "<li class=\"text-danger\">Пароль должен содержать минимум 6 символов, включающих в себя букву на английском языке и одну цифру<br>";
 }
 
 if(!$_POST["rights"]){
@@ -57,12 +54,20 @@ if(!$active){
 if($password){
 	$password_hash = password_hash($password, PASSWORD_DEFAULT);
 }
-if(mysql_query("UPDATE `user` SET `login` = '".$login."',`first_name` = '".(isset($first_name) ? $first_name : '')."',`second_name` = '".(isset($second_name) ? $second_name : '')."',`third_name` = '".(isset($third_name) ? $third_name : '')."',`date_birth` = '".$date_birth."',`active` = '".$active."'".(isset($password) ? ",`password` = '".$password_hash."'" : '')." WHERE `user_id` = '".$user."'")){
+if(mysql_query("UPDATE `user` SET `login` = '".$login."',`first_name` = '".(isset($first_name) ? $first_name : '')."',`second_name` = '".(isset($second_name) ? $second_name : '')."',`third_name` = '".(isset($third_name) ? $third_name : '')."',`date_birth` = '".$date_birth."',`max_time` = '".$max_time."',`active` = '".$active."'".(isset($password) ? ",`password` = '".$password_hash."'" : '')." WHERE `user_id` = '".$user."'")){
 	$user_id = $user_data["user_id"];
 	mysql_query("DELETE FROM `user_rights` WHERE `user_id` = '".$user."'");
+	mysql_query("DELETE FROM `user_channels` WHERE `user_id` = '".$user."'");
+	mysql_query("DELETE FROM `user_items` WHERE `user_id` = '".$user."'");
 	foreach ($_POST["rights"] as $key => $value) {
 		mysql_query("INSERT INTO `user_rights` (user_id,rights) VALUES('".$user."','".mysql_real_escape_string($value)."')");
 	}
+	foreach ($_POST["channel"] as $key => $value) {
+		mysql_query("INSERT INTO `user_channels` (user_id,channel) VALUES('".$user."','".mysql_real_escape_string($value)."')");
+	}
+	foreach ($_POST["item"] as $key => $value) {
+		mysql_query("INSERT INTO `user_items` (user_id,item) VALUES('".$user."','".mysql_real_escape_string($value)."')");
+	}		
 	echo "<br><p class=\"text-success\">Пользователь успешно изменён. <br> Логин: <strong>$login</strong>";
 	echo (isset($password) ? "<br>Пароль: <strong>$password</strong></p>" : '');
 } else {

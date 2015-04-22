@@ -12,10 +12,20 @@ if(mysql_num_rows($query) == 0){
 	exit;   
 }
 $user_data = mysql_fetch_assoc($query);
+
 $user_rights = mysql_query("SELECT * FROM `user_rights` WHERE `user_id` = $user_id");
 while ($row = mysql_fetch_assoc($user_rights)) {
 	$user_data['rights'][$row['rights']] = 1;
 }
 
+$user_channels = mysql_query("SELECT * FROM `user_channels` WHERE `user_id` = $user_id");
+while ($row = mysql_fetch_assoc($user_channels)) {
+	$user_data['channels'][$row['channel']] = 1;
+}
+
+$user_items = mysql_query("SELECT * FROM `user_items` WHERE `user_id` = $user_id");
+while ($row = mysql_fetch_assoc($user_items)) {
+	$user_data['items'][$row['item']] = 1;
+}
 echo json_encode($user_data);
 ?>

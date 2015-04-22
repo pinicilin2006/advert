@@ -14,6 +14,9 @@ connect_to_base();
 					  <div class="form-group has-feedback">					    					    
 					      <input type="text" class="form-control" id="channel" name="channel" placeholder="Название канала">					    
 					  </div>
+					  <div class="form-group has-feedback">					    					    
+					      <input type="text" class="form-control" id="price_word" name="price" placeholder="Цена за слово">					    
+					  </div>					  
 					  <div class="form-group">
 							<label class="checkbox-inline"><input type="checkbox" name="active" value="1" checked>Канал выхода активен</label>	    
 					  </div>					  

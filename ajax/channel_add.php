@@ -24,6 +24,9 @@ $err_text = '';
 if(!$channel){
 	$err_text .= "<li class=\"text-danger\">Отсутствует название канала выхода</li>";
 }
+if(!$price){
+	$err_text .= "<li class=\"text-danger\">Отсутствует стоимость слова</li>";
+}
 if(mysql_num_rows(mysql_query("SELECT * FROM `channel` WHERE `name` = '".$channel."'"))>0){
 	$err_text .= "<li class=\"text-danger\">Канал выхода с таким именем был добавлен ранее.</li>";
 }
@@ -36,7 +39,7 @@ if(!$active){
 }
 
 //Добавляем в базу данных
-if(mysql_query("INSERT INTO `channel` (name,who_add,active) VALUES('".$channel."','".$_SESSION["user_id"]."','".$active."')")){
+if(mysql_query("INSERT INTO `channel` (name,who_add,active,price) VALUES('".$channel."','".$_SESSION["user_id"]."','".$active."','".$price."')")){
 	echo "<p class=\"text-success\">Канал выхода успешно добавлен.</p>";
 }else{
 	echo "<p class=\"text-danger\">Произошла ошибка при добавление канала выхода.</p>";

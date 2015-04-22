@@ -182,10 +182,17 @@ function user_data(a){
 		    $('#third_name').val(data.third_name);
 		    $('#login').val(data.login);
 		    $('#date_birth').val(data.date_birth);
-		    $(".rights").prop("checked", false);
+		    $('#max_time').val(data.max_time);
+		    $(".data_clear").prop("checked", false);
 		    jQuery.each(data.rights, function(i, val) {
 		      	$("#right_"+i).prop("checked", true);
 		    });
+		    jQuery.each(data.channels, function(i, val) {
+		      	$("#channel_"+i).prop("checked", true);
+		    });
+		    jQuery.each(data.items, function(i, val) {
+		      	$("#item_"+i).prop("checked", true);
+		    });		    		    
 		    if(data.active == 1){
 		    	$("#active").prop("checked", true);
 		    }else{
@@ -220,12 +227,14 @@ function channel_data(){
 		type: "GET",
 		url: '/ajax/channel_data.php',
 		data: 'channel_id='+a,
+		dataType: 'json',
 		success: function(data) {	  
-		    if(data == '1'){
+		    if(data.active == '1'){
 		    	$("#active").prop("checked", true);
 		    }else{
 		    	$("#active").prop("checked", false);
 		    }
+			$("#price_word").val(data.price);
 		}
 	});
 }

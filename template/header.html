@@ -54,9 +54,15 @@
           <ul class="nav navbar-nav">
             <li <?php echo ($_SERVER['PHP_SELF'] == "/advert.php" ?  " class=\"active\"" : "") ?>> <a href="/advert.php">Новое объявление</a></li>
            <!--  <li <?php echo ($_SERVER['PHP_SELF'] == "/advert_edit.php" ?  " class=\"active\"" : "") ?>> <a href="/advert_edit.php">Редактировать объявление</a></li>  -->
-            <li <?php echo ($_SERVER['PHP_SELF'] == "/advert_list.php" ?  " class=\"active\"" : "") ?>> <a href="/advert_list.php">Список объявлений</a></li>
-            <li <?php echo ($_SERVER['PHP_SELF'] == "/month_list.php" ?  " class=\"active\"" : "") ?>> <a href="/month_list.php">Общий график выхода объявлений</a></li>
-            <li <?php echo ($_SERVER['PHP_SELF'] == "/admin.php" ?  " class=\"active\"" : "") ?>> <a href="/admin.php">Администрирование</a></li>                              
+            <li <?php echo ($_SERVER['PHP_SELF'] == "/advert_list.php" ?  " class=\"active\"" : "") ?>> <a href="/advert_list.php">Общий список</a></li>
+            <li <?php echo ($_SERVER['PHP_SELF'] == "/month_list.php" ?  " class=\"active\"" : "") ?>> <a href="/month_list.php">График выходов</a></li>
+            <?php 
+            if($_SESSION['access'][1]){
+            ?>
+            	<li <?php echo ($_SERVER['PHP_SELF'] == "/admin.php" ?  " class=\"active\"" : "") ?>> <a href="/admin.php">Администрирование</a></li>                              
+            <?php
+        	}
+            ?>
             <li> <a href="/method/exit.php">Выход</a></li>
           </ul>
 <!--             <form class="navbar-form navbar-right" role="search">
@@ -68,6 +74,11 @@
         </div>          
       </div>
     </nav>
+    <div class="container-fluid" style="font-size:11px">
+      <ul class="list-inline text-muted text-center list-group">
+        <li class="list-group-item text-danger"><b>Пользователь:</b> <em class="danger"><?php echo $_SESSION["second_name"].' '.$_SESSION["first_name"].' '.$_SESSION["third_name"] ?></em></li>    
+      </ul>   
+    </div>    
 
 
 

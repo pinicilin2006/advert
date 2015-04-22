@@ -14,7 +14,7 @@ require_once('../function.php');
 connect_to_base();
 $err_text='';
 foreach($_POST as $key => $val){
-	if($key == 'rights' || empty($val)){
+	if($key == 'rights' || $key == 'channel' || $key == 'item' || empty($val)){
 		continue;
 	}
 	$$key = mysql_escape_string($val);
@@ -31,9 +31,9 @@ if(!$login){
 if(!$password){
 	$err_text .= "<li class=\"text-danger\">Не указан пароль</li>";
 }
-if(isset($password) && (strlen($password) < 6 || !preg_match("/([0-9]+)/", $password) || !preg_match("/([a-zA-Z]+)/", $password))){
-	$err_text .= "<li class=\"text-danger\">Пароль должен содержать минимум 6 символов, включающих в себя букву на английском языке и одну цифру<br>";
-}
+// if(isset($password) && (strlen($password) < 6 || !preg_match("/([0-9]+)/", $password) || !preg_match("/([a-zA-Z]+)/", $password))){
+// 	$err_text .= "<li class=\"text-danger\">Пароль должен содержать минимум 6 символов, включающих в себя букву на английском языке и одну цифру<br>";
+// }
 // if(!$filial){
 // 	$err_text .= "<li class=\"text-danger\">Не указан филиал</li>";
 // }
@@ -57,12 +57,18 @@ if(!$active){
 	$active = 0;
 }
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
-if(mysql_query("INSERT INTO `user` (login,password,first_name,second_name,third_name,active,who_added) VALUES('".$login."','".$password_hash."','".$first_name."','".$second_name."','".$third_name."','".$active."','".$_SESSION["user_id"]."')")){
+if(mysql_query("INSERT INTO `user` (login,password,first_name,second_name,third_name,active,max_time,who_added) VALUES('".$login."','".$password_hash."','".$first_name."','".$second_name."','".$third_name."','".$active."','".$max_time."','".$_SESSION["user_id"]."')")){
 	$user_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `user` WHERE `login` = '".$login."'"));
 	$user_id = $user_data["user_id"];
 	foreach ($_POST["rights"] as $key => $value) {
 		mysql_query("INSERT INTO `user_rights` (user_id,rights) VALUES('".$user_id."','".mysql_real_escape_string($value)."')");
 	}
+	foreach ($_POST["channel"] as $key => $value) {
+		mysql_query("INSERT INTO `user_channels` (user_id,channel) VALUES('".$user_id."','".mysql_real_escape_string($value)."')");
+	}
+	foreach ($_POST["item"] as $key => $value) {
+		mysql_query("INSERT INTO `user_items` (user_id,item) VALUES('".$user_id."','".mysql_real_escape_string($value)."')");
+	}		
 	echo "<br><p class=\"text-success\">Пользователь <strong>$second_name $first_name $third_name</strong> успешно добавлен. <br> Логин <strong>$login</strong><br>Пароль <strong>$password</strong></p>";
 } else {
 	echo "<p class=\"text-danger\">Произошла ошибка при добавление пользователя в базу данных!</p>";

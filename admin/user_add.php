@@ -11,39 +11,73 @@ connect_to_base();
 	  			<div class="panel-body" id="user_data">
 					<form class="form-horizontal col-sm-4 col-sm-offset-1" role="form" id="main_form">					
 
-					  <div class="form-group has-feedback">					    					    
-					      <input type="text" class="form-control input-sm fio" id="second_name" name="second_name" placeholder="Фамилия">					    
-					  </div>
+<!-- 					  <div class="form-group has-feedback">					    					    
+					      <input type="text" class="form-control input-sm fio" id="second_name" name="second_name" placeholder="Имя пользователя" required>					    
+					  </div> -->
 					  <div class="form-group has-feedback">					    					    
 					      <input type="text" class="form-control input-sm fio" id="first_name" name="first_name" placeholder="Имя">					    
 					  </div>
 
-					  <div class="form-group has-feedback">					    					    
+<!-- 					  <div class="form-group has-feedback">					    					    
 					      <input type="text" class="form-control input-sm fio" id="third_name" name="third_name" placeholder="Отчество">					    
 					  </div>					  					  
 
 					  <div class="form-group has-feedback">					    					    
 					      <input type="text" class="form-control input-sm" id="date_birth" name="date_birth" placeholder="Дата рождения">					    
-					  </div>
+					  </div> -->
 
 					  <div class="form-group has-feedback">					    					    
 					      <input type="text" class="form-control input-sm" id="login" name="login" placeholder="Логин" required>					    
 					  </div>
 
 					  <div class="form-group has-feedback">					    					    
-					      <input type="text" class="form-control input-sm" id="password" name="password" value='<?php echo generate_password(8)?>' placeholder="Пароль" required>
-					      <p class="help-block"><small>Английский язык, минимум 6 символов, минимум одна буква и одна цифра.</small></p>					    
+					      <input type="text" class="form-control input-sm" id="password" name="password" value='<?php echo generate_password(8)?>' placeholder="Пароль" required>				    
 					  </div>
 
-					  <hr align="center" size="2" />
-					  
-					  <div class="form-group">
+					  <div class="form-group has-feedback">					    					    
+					      <input type="time" class="form-control input-sm" id="max_time" name="max_time" placeholder="Максимальное время приёма объявления" required>					    
+					  </div>					  
+
+					  <div class="form-group">					  
+					  <dl>
+					  		<dt>Права пользователя:</dt>
+					  		<hr class="hr_red3">
 					  		<?php
 					  		$query=mysql_query("SELECT * FROM `rights` WHERE active = 1 ORDER BY priority");
 					  		while($row = mysql_fetch_assoc($query)){
-								echo "<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"rights[]\" value=\"$row[id]\" >$row[name]</label><br>";
+								echo "<dd><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"rights[]\" value=\"$row[id]\" >$row[name]</label></dd>";
 							}
-							?>    
+							?>
+							<hr class="hr_red3"> 
+					  </dl>							  
+					  </div>
+
+					  <div class="form-group">					  
+					  <dl>
+					  		<dt>Каналы выхода:</dt>
+					  		<hr class="hr_red3">
+					  		<?php
+					  		$query=mysql_query("SELECT * FROM `channel` WHERE active = 1 ORDER BY id");
+					  		while($row = mysql_fetch_assoc($query)){
+								echo "<dd><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"channel[]\" value=\"$row[id]\" >$row[name]</label></dd>";
+							}
+							?>
+							<hr class="hr_red3"> 
+					  </dl>							  
+					  </div>
+
+					  <div class="form-group">					  
+					  <dl>
+					  		<dt>Пункты приёма:</dt>
+					  		<hr class="hr_red3">
+					  		<?php
+					  		$query=mysql_query("SELECT * FROM `item` ORDER BY id");
+					  		while($row = mysql_fetch_assoc($query)){
+								echo "<dd><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"item[]\" value=\"$row[id]\" >$row[name]</label></dd>";
+							}
+							?>
+							<hr class="hr_red3"> 
+					  </dl>							  
 					  </div>
 
 					  <hr align="center" size="2" />
@@ -61,7 +95,7 @@ connect_to_base();
 </div>
 <script type="text/javascript">
 //Маски ввода
-	$('#phone').mask('(000)000-00-00');
+	$('#max_time').mask('00:00');
 	$('#date_birth').mask('00.00.0000');	
 //Календарик	
 	$( "#date_birth" ).datepicker({
@@ -99,16 +133,15 @@ connect_to_base();
 	//$('#login').val(to);
 }	
 $('.fio').change(function(){
-	if($('#first_name').val() === '' || $('#second_name').val() === '' || $('#third_name').val() === ''){
+	if($('#first_name').val() === ''){
 		return false;
 	}
-	var a = convert($('#first_name').val()[0]);
-	var b = convert($('#second_name').val());
-	var c = convert($('#third_name').val()[0]);
-	// var a_tr = convert(a);
+	var a = convert($('#first_name').val());
+
+	var a_tr = convert(a);
 	// var b_tr = convert(b);
 	// var c_tr = convert(c);
-	var login = b+'_'+a+c;
+	var login = a;
 	$('#login').val(login);	
 });
 //проверка данных формы

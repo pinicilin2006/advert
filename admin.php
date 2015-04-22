@@ -18,13 +18,18 @@ require_once('template/header.html');
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="item_menu active"><a class="admin_menu" id="user_add" href="#">Добавить пользователя</a></li>
-            <li class="item_menu"><a class="admin_menu" id="user_edit" href="#">Редактировать пользователя</a></li>
-            <li class="item_menu"><a class="admin_menu" id="item_add"href="#">Добавить пункт приёма</a></li>
-            <li class="item_menu"><a class="admin_menu" id="item_edit" href="#">Редактировать пункт приёма</a></li>
-            <li class="item_menu"><a class="admin_menu" id="channel_add" href="#">Добавить канал выхода</a></li>
-            <li class="item_menu"><a class="admin_menu" id="channel_edit" href="#">Редактировать канал выхода</a></li>
-            <li class="item_menu"><a class="admin_menu" id="price" href="#">Цена за слово</a></li>
+          	<li class="item_menu active"><a class="admin_menu" id="user_list" href="#"><b>ПОЛЬЗОВАТЕЛИ</b></a></li>
+            <li class="item_menu"><a class="admin_menu" id="user_add" href="#"><em>Добавить пользователя</em></a></li>
+            <li class="item_menu"><a class="admin_menu" id="user_edit" href="#"><em>Редактировать пользователя</em></a></li>
+            <hr class="hr_red3">
+            <li class="item_menu"><a class="admin_menu" id="item_list"href="#"><b>ПУНКТЫ ПРИЁМА</b></a></li>
+            <li class="item_menu"><a class="admin_menu" id="item_add"href="#"><em>Добавить пункт приёма</em></a></li>
+            <li class="item_menu"><a class="admin_menu" id="item_edit" href="#"><em>Редактировать пункт приёма</em></a></li>
+            <hr class="hr_red3">
+            <li class="item_menu"><a class="admin_menu" id="channel_list" href="#"><b>КАНАЛЫ ВЫХОДА</b></a></li>
+            <li class="item_menu"><a class="admin_menu" id="channel_add" href="#"><em>Добавить канал выхода</em></a></li>
+            <li class="item_menu"><a class="admin_menu" id="channel_edit" href="#"><em>Редактировать канал выхода</em></a></li>
+            <hr class="hr_red3">
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -39,7 +44,7 @@ require_once('template/header.html');
 <script type="text/javascript">
 $(document).ready(function(){
 //Начальная загрузка страницы
-$("#message").load("/admin/user_add.php");
+$("#message").load("/admin/user_list.php");
 //Загрузка содержимого в зависимости от выбранного пункта меню
 $(document).on("click", ".admin_menu", function(){
 	var a = $(this).attr('id');
