@@ -161,30 +161,33 @@ function edit_speed(){
 			return false;
 }
 
-function price(){
-			var a = $("#main_form").serialize();
-			$.ajax({
-			  type: "POST",
-			  url: '/ajax/price_word.php',
-			  data: a,
-			  success: function(data) {
-			  	$("#user_data").slideUp(400);
-			  	$("#message_result").html(data);
-			  }
-			});
-			return false;
-}
+// function price(){
+// 			var a = $("#main_form").serialize();
+// 			$.ajax({
+// 			  type: "POST",
+// 			  url: '/ajax/price_word.php',
+// 			  data: a,
+// 			  success: function(data) {
+// 			  	$("#user_data").slideUp(400);
+// 			  	$("#message_result").html(data);
+// 			  }
+// 			});
+// 			return false;
+// }
 
 function calc(){
 			$("#price").val('');
+			$("#price_day").val('');
 			var a = $("#main_form").serialize();
 			$.ajax({
 			  type: "POST",
 			  url: '/ajax/calc.php',
 			  data: a,
+			  dataType: 'json',
 			  success: function(data) {
 			  	if(data !=''){
-			  		$("#price").val(data);
+			  		$("#price").val(data.summa);
+			  		$("#price_day").val(data.price_day);
 			  	}
 			  }
 			});

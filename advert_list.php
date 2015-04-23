@@ -13,9 +13,10 @@ require_once('function.php');
 connect_to_base();
 require_once('template/header.html');
 //Запрос по умолчанию при пустых полях фильтра
-$query = "SELECT advert.*, client.*, views_ads.name views_name, item.name item_name FROM `advert`,`client`,`views_ads`,`item` WHERE advert.id_client = client.id_client AND views_ads.id = advert.view_ads AND item.id = advert.item";
+$query = "SELECT advert.*, client.*, item.name item_name FROM `advert`,`client`,`item` WHERE advert.id_client = client.id_client AND item.id = advert.item";
+//$query = "SELECT advert.*,client.*,item.name item_name,"
 if(isset($_POST['date_released']) && !empty($_POST['date_released'])){
-	$query = "SELECT advert.*, client.*, views_ads.name views_name, item.name item_name, released_advert.* FROM `advert`,`client`,`views_ads`,`item`, `released_advert` WHERE advert.id_client = client.id_client AND views_ads.id = advert.view_ads AND item.id = advert.item AND released_advert.id_advert = advert.id AND released_advert.date_released = '".$_POST['date_released']."'";
+	$query = "SELECT advert.*, client.*, item.name item_name, released_advert.* FROM `advert`,`client`,`item`, `released_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id AND released_advert.date_released = '".$_POST['date_released']."'";
 }
 if(isset($_POST['view_ads'])){
 	$query .= " AND view_ads = $_POST[view_ads]";
@@ -78,7 +79,6 @@ if(mysql_num_rows($query) == 0){
 				    				<th style = 'cursor: pointer;'>Дата создания <span class="glyphicon glyphicon-sort pull-right"></span></th>
 				    				<th style = 'cursor: pointer;'>Нименование клиента<span class="glyphicon glyphicon-sort pull-right"></span></th>
 									<th style = 'cursor: pointer;'>Пункт приёма<span class="glyphicon glyphicon-sort pull-right"></span></th>
-				    				<th style = 'cursor: pointer;'>Вид объявления<span class="glyphicon glyphicon-sort pull-right"></span></th>
 				    				<th style = 'cursor: pointer;'>Текст<span class="glyphicon glyphicon-sort pull-right"></span></th>
 				    				<th style = 'cursor: pointer;'>Кол-во слов<span class="glyphicon glyphicon-sort pull-right"></span></th>
 				    				<th style = 'cursor: pointer;'>кол-во дней <span class="glyphicon glyphicon-sort pull-right"></span></th>
@@ -98,7 +98,6 @@ while($row = mysql_fetch_assoc($query)){
 	echo "<td>".date("d.m.Y", strtotime($row['date_create']))."</td>";
 	echo "<td>".$row['name']."</td>";
 	echo "<td>".$row['item_name']."</td>";
-	echo "<td>".$row['views_name']."</td>";
 	echo "<td>".$row['text_advert']."</td>";
 	echo "<td>".$row['words']."</td>";
 	echo "<td>".mysql_num_rows(mysql_query("SELECT * FROM `released_advert` WHERE `id_advert` = $row[id]"))."</td>";

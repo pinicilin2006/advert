@@ -25,21 +25,33 @@ if(!$days || !$channel || !$words){
 	exit;
 }
 $summa = 0;
-foreach ($channel as $key => $value) {
-	$channel_data = mysql_fetch_assoc(mysql_query("SELECT * FROM channel WHERE id = $value"));
-	$summa = $summa + ($days * $words * $channel_data['price']);
-}
-if($discount){
-	$summa = round(($summa /100)*$discount, 2);
-}
+$price_day = 0;
 if($speed){
 	$speed_data = mysql_fetch_assoc(mysql_query("SELECT * FROM speed WHERE id = 4"));
-	$summa = round($summa * $speed_data['koef'], 2);
 }
+$n = 0;
+foreach ($channel as $key => $value) {
+	$n++;
+	$channel_data = '';
+	$channel_data = mysql_fetch_assoc(mysql_query("SELECT * FROM channel WHERE id = $value"));
+	$summa = $summa + ($days * $words * $channel_data['price']);
+	//Считаем для первого дня при установленной галочке за срочность
+	if($speed && $n == 1){
+		$summa = $summa * $speed_data['koef'];
+	}
+	//Определяем стоимость в день
+	$price_day = $price_day + $channel_data['price'] * $words;
+}
+	$discount_data = mysql_fetch_assoc(mysql_query("SELECT * FROM discount WHERE id = $discount"));
+	if($discount_data['percent'] > 0){
+		$summa = round($summa - ($summa/100)*$discount_data['percent'], 2);
+	} 
 //Закидываем в таблицу с расчётами
-if(mysql_query("INSERT INTO `calculation` (summa) VALUES ('".$summa."')")){
+if(mysql_query("INSERT INTO `calculation` (summa,price_day,discount,discount_id) VALUES ('".$summa."','".$price_day."','".$discount_data['percent']."','".$discount_data['id']."')")){
 	$_SESSION['calculation'] = mysql_insert_id();
-	echo $summa;
+	$calc_result = array();
+	$calc_result['price_day'] = $price_day;
+	$calc_result['summa'] = $summa;
+	echo json_encode($calc_result);
 }
-
 ?>

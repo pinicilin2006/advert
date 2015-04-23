@@ -1,11 +1,4 @@
-//календарик
-$('#released').multiDatesPicker({
-		minDate: 0,
-	  	onSelect: function() {
-	    	num_days();
-	    	calc();
-  		}
-});
+
 //Фокус на первом поле
 $("#item").focus();
 //Автозаполнение ФИО и телефона
@@ -30,4 +23,13 @@ $(document).on("keyup", ".text_advert", function(){
 //Подсчёт стоимости
 $(document).on("change keyup", ".calc", function(){
 	calc();
+});
+//Включаем/отключаем кнопку сохранения
+$("#paid").bind("change click", function () {
+    if($(this).prop("checked")){
+    	$("#save_button").prop("disabled", false);
+    } else {
+    	$("#save_button").prop("disabled", true);
+    }
+
 });

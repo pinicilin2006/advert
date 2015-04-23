@@ -96,7 +96,7 @@ require_once('template/header.html');
 								<div class="row">
 									<div class="col-xs-12 col-sm-12 col-md-12" >
 										<div class="form-group has-feedback">				    	
-											<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления" required>
+											<input type="text" class="form-control calc" id="released" name="released" placeholder="Даты выходов объявления" readonly="readonly" required>
 										</div>
 									</div>									
 								</div>
@@ -135,7 +135,7 @@ require_once('template/header.html');
 											<span class="input-group-addon"><span class="text-danger"><b>Скидка:</b></span></span>	
 											    <select class="form-control calc" name="discount" id="discount" required>											   
 											    <?php					  		
-										  		$query = mysql_query("SELECT * FROM discount ORDER BY name");
+										  		$query = mysql_query("SELECT * FROM discount WHERE active = 1 ORDER BY name");
 										  		while($row = mysql_fetch_assoc($query)){
 													echo "<option value=\"$row[id]\" ";
 													echo ">$row[name]%";
@@ -152,13 +152,13 @@ require_once('template/header.html');
 							<div class="col-xs-12 col-sm-12 col-md-12" >
 								<div class="col-xs-6 col-sm-6 col-md-6" style="padding-left:0px;padding-right:0px">
 									<div class="form-group has-feedback">					    					    
-									      <textarea style="resize: none;" class="form-control" rows="1" id="comment" name="comment" placeholder="Комментарий" required></textarea>					    
+									      <textarea style="resize: none;" class="form-control" rows="1" id="comment" name="comment" placeholder="Комментарий"></textarea>					    
 									</div>
 								</div>
 								<div class="col-xs-3 col-sm-3 col-md-3">
 									<div class="form-group has-feedback" style="padding-top:4%">
 										<div class="checkbox-inline">	
-											<label><input type="checkbox" class="calc" name="speed" value="1"><b><span class="text-danger">СРОЧНОЕ!</span></b></label>
+											<label><input type="checkbox" class="calc" id="speed" name="speed" value="1"><b><span class="text-danger">СРОЧНОЕ!</span></b></label>
 										</div>											
 									</div>										
 								</div>
@@ -177,9 +177,9 @@ require_once('template/header.html');
 								<hr class="hr_red">
 									<div class="form-group has-feedback pull-right">
 										<div class="checkbox-inline" >	
-											<label><input type="checkbox" name="paid" value="1"><b><span class="text-danger">ПРИНЯТО</span></b></label>
+											<label><input type="checkbox" id="paid" name="paid" value="1"><b><span class="text-danger">ПРИНЯТО</span></b></label>
 										</div>
-										&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger">Сохранить объявление</button>
+										&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" id="save_button" disabled="disabled">Сохранить объявление</button>
 									</div>								
 							</div>
 						</div>						
@@ -199,6 +199,39 @@ require_once('template/header.html');
 <!-- вставляем скрипты общие для формы добавления и редактирования -->
 <script src="/js/ad.js"></script>
 <script type="text/javascript">
+//календарик
+$('#released').multiDatesPicker({
+		minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+	  	onSelect: function() {
+	    	num_days();
+	    	calc();
+  		}
+});
+//Включаем/отключаем кнопку сохранения
+$("#speed").bind("change click", function () {
+    if($(this).prop("checked")){
+    	$("#released").val('');
+    	$("#released").multiDatesPicker("destroy");
+		$('#released').multiDatesPicker({
+				minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 0 : 1) ?>,
+			  	onSelect: function() {
+			    	num_days();
+			    	calc();
+		  		}
+		});    	
+    } else {
+    	$("#released").val('');
+		$("#released").multiDatesPicker("destroy");
+		$('#released').multiDatesPicker({
+				minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+			  	onSelect: function() {
+			    	num_days();
+			    	calc();
+		  		}
+		});		    	
+    }
+
+});
 //проверка данных формы
     $('#main_form').submit(function( event ) {
     	add_advert();

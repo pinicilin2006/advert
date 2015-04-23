@@ -40,16 +40,13 @@ if(!$text_advert){
 	$err_text .= "<li class=\"text-danger\">Не указан текст объявления</li>";
 }
 if(!$words){
-	$err_text .= "<li class=\"text-danger\">Не указан текст объявления</li>";
+	$err_text .= "<li class=\"text-danger\">Не указано количество слов</li>";
 }
 if(!$released){
 	$err_text .= "<li class=\"text-danger\">Не указана дата выхода</li>";
 }
 if(!$days){
 	$err_text .= "<li class=\"text-danger\">Не указано количество дней</li>";
-}
-if(!$view_ads){
-	$err_text .= "<li class=\"text-danger\">Не указан вид объявления</li>";
 }
 if(!$_SESSION['calculation']){
 	$err_text .= "<li class=\"text-danger\">Отсутствует данные расчёта</li>";
@@ -81,6 +78,12 @@ if(!$price){
 if(!$client_phone){
 	$client_phone = '';
 }
+if(!$comment){
+	$comment = '';
+}
+if(!$speed){
+	$speed = '';
+}
 //Проверяем есть клиент уже в базе и если нет то добавляем его в базу данных
 $client_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `client` WHERE `name` = '".$client_name."' AND `phone` = '".$client_phone."'"));
 if($client_data){
@@ -95,7 +98,7 @@ if($client_data){
 }
 //$query = "REPLACE INTO `advert` (id_client,text_advert,item,view_ads,words,price,calc_id,paid,who_add,md5_id) VALUES('".$id_client."','".$text_advert."','".$item."','".$view_ads."','".$words."','".$price['summa']."','".$_SESSION['calculation']."','".$paid."','".$_SESSION['user_id']."','".$md5_id."')";
 $id_advert = $advert_data_old['id'];
-$query = "UPDATE `advert` SET id_client = $id_client, text_advert = '".$text_advert."', item = '".$item."', view_ads = '".$view_ads."', words = '".$words."', price  = '".$price['summa']."', calc_id = '".$_SESSION['calculation']."', paid  = '".$paid."', edit  = 1 WHERE `id` = '".$id_advert."'";
+$query = "UPDATE `advert` SET id_client = $id_client, text_advert = '".$text_advert."', comment = '".$comment."', item = '".$item."', speed = '".$speed."', words = '".$words."', price  = '".$price['summa']."', calc_id = '".$_SESSION['calculation']."', paid  = '".$paid."', edit  = 1 WHERE `id` = '".$id_advert."'";
 //Обновляем объявление в базе
 if(mysql_query($query)){
 	//если успешно то записываем старый текст в лог
