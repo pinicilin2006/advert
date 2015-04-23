@@ -20,7 +20,7 @@ $file = $_POST['date_released'].".txt";
 $text = '';
 
 while($row = mysql_fetch_assoc($query)){
-	$text .= $row['text_advert']."\n\n";
+	$text .= trim($row['text_advert'])."\r\n\r\n";
 }
 $text = iconv('utf-8', 'windows-1251', $text);
 header ("Content-Type: application/txt");

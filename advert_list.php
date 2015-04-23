@@ -15,27 +15,36 @@ require_once('template/header.html');
 //Запрос по умолчанию при пустых полях фильтра
 $query = "SELECT advert.*, client.*, item.name item_name FROM `advert`,`client`,`item` WHERE advert.id_client = client.id_client AND item.id = advert.item";
 //$query = "SELECT advert.*,client.*,item.name item_name,"
-if(isset($_POST['date_released']) && !empty($_POST['date_released'])){
+if(isset($_POST['channel']) && !empty($_POST['channel'])){
+	$query = "SELECT advert.*, client.*, item.name item_name,channel_advert.* FROM `advert`,`client`,`item`,channel_advert WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.id = channel_advert.id_advert AND channel_advert.id_channel = $_POST[channel]";
+}
+if(isset($_POST['date_released']) && !empty($_POST['date_released']) && empty($_POST['channel'])){
 	$query = "SELECT advert.*, client.*, item.name item_name, released_advert.* FROM `advert`,`client`,`item`, `released_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id AND released_advert.date_released = '".$_POST['date_released']."'";
 }
-if(isset($_POST['view_ads'])){
-	$query .= " AND view_ads = $_POST[view_ads]";
+if(isset($_POST['date_released']) && !empty($_POST['date_released']) && !empty($_POST['channel'])){
+	$query = "SELECT advert.*, client.*, item.name item_name, released_advert.*, channel_advert.* FROM `advert`,`client`,`item`, `released_advert`, `channel_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id AND released_advert.date_released = '".$_POST['date_released']."' AND channel_advert.id_channel = $_POST[channel] AND advert.id = channel_advert.id_advert";
 }
+
 if(isset($_POST['paid'])){
 	$query .= " AND paid = 1";
+}
+if(!isset($_SESSION['access'][9])){
+	$query .= " AND advert.who_add = $_SESSION[user_id]";
 }
 $query .= " ORDER BY id";
 $query_text = $query;
 $query = mysql_query($query);
 //$query .= "ORDER BY id";
 if(mysql_num_rows($query) == 0){
+	//echo $query_text;
 	echo "<span class=\"text-danger\"><center>Отсутствуют объявления в базе данных.</center></span>";
 	exit();	
 }
+//echo $query_text;
 ?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
+		<div class="col-md-12">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
 	    			<h3 class="panel-title">Список объявлений</h3>
@@ -48,16 +57,17 @@ if(mysql_num_rows($query) == 0){
 							      <input type="text" class="form-control" id="date_released" name="date_released" value="<?php echo $_POST['date_released']?>" placeholder="Дата выхода">					    
 							</div>
 							<div class="form-group">
+								<select class="form-control" name="channel" id="channel">
+											<option value="" <?php echo (!$_POST['channel'] || empty($_POST['channel']) ? ' selected' : '') ?>>Канал выхода</option>
 											<?php
-											$query_views = mysql_query("SELECT * FROM views_ads where active = 1");
-											while($row = mysql_fetch_assoc($query_views)){
+											$query_channel = mysql_query("SELECT * FROM channel where active = 1");
+											while($row = mysql_fetch_assoc($query_channel)){
 											?>
-												<div class="radio-inline" style="padding-top:2%">
-												  	<span><label style="font-weight:normal"><input type="radio" name="view_ads" value="<?php echo $row['id']?>" <?php echo ($row['id'] == $_POST['view_ads'] ? ' checked' : '')?>><b><?php echo $row['name']?></b></label></span>
-												</div>
+									    	<option value="<?php echo $row['id']?>" <?php echo ($_POST['channel'] == $row['id'] ? ' selected' : '') ?> ><?php echo $row['name']?></option>											
 											<?php
 											}
 											?>
+								</select>
 							</div>
 							<div class="form-group ">
 								<div class="checkbox-inline" style="padding-top:2%">	
@@ -75,14 +85,14 @@ if(mysql_num_rows($query) == 0){
 		    			<table class='table table-hover table-responsive table-condensed table-bordered' id='contract_table'>
 		    				<thead>
 		    					<tr>
-				    				<th style = 'cursor: pointer;'>№ <span class="glyphicon glyphicon-sort pull-right"></span></th>
-				    				<th style = 'cursor: pointer;'>Дата создания <span class="glyphicon glyphicon-sort pull-right"></span></th>
-				    				<th style = 'cursor: pointer;'>Нименование клиента<span class="glyphicon glyphicon-sort pull-right"></span></th>
-									<th style = 'cursor: pointer;'>Пункт приёма<span class="glyphicon glyphicon-sort pull-right"></span></th>
-				    				<th style = 'cursor: pointer;'>Текст<span class="glyphicon glyphicon-sort pull-right"></span></th>
-				    				<th style = 'cursor: pointer;'>Кол-во слов<span class="glyphicon glyphicon-sort pull-right"></span></th>
-				    				<th style = 'cursor: pointer;'>кол-во дней <span class="glyphicon glyphicon-sort pull-right"></span></th>
-				    				<th style = 'cursor: pointer;'>Стоимость<span class="glyphicon glyphicon-sort pull-right"></span></th>
+				    				<th style = 'cursor: pointer;'>№ </th>
+				    				<th style = 'cursor: pointer;'>Дата создания </th>
+				    				<th style = 'cursor: pointer;'>Нименование клиента</th>
+									<th style = 'cursor: pointer;'>Пункт приёма</th>
+				    				<th style = 'cursor: pointer;'>Текст</th>
+				    				<th style = 'cursor: pointer;'>Кол-во слов</th>
+				    				<th style = 'cursor: pointer;'>кол-во дней </th>
+				    				<th style = 'cursor: pointer;'>Стоимость</th>
 				    				<th style = 'cursor: pointer;'>Действия</th>
 				    			</tr>
 			    			</thead>
@@ -107,6 +117,7 @@ while($row = mysql_fetch_assoc($query)){
 <div class="btn-group">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>
   <ul class="dropdown-menu" role="menu">';
+  echo '<li><a href="/advert_show.php?id='.$row['md5_id'].'" target="_blank"><small>Просмотр</small></a></li><li class="divider" style="margin:0 0"></li>';
 if(isset($_SESSION['access'][8])){
 	echo '<li><a href="/advert_edit2.php?id='.$row['md5_id'].'"><small>Редактировать текст</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
@@ -114,7 +125,7 @@ if(isset($_SESSION['access'][6])){
 	echo '<li><a href="/advert_edit.php?id='.$row['md5_id'].'"><small>Полное редактирование</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
 if(mysql_num_rows(mysql_query("SELECT * FROM `old_advert` WHERE id_advert = $row[id]")) > 0){
-	echo '<li><a href="/advert_history.php?id='.$row['id'].'"><small>Список изменений</small></a></li><li class="divider" style="margin:0 0"></li>';
+	echo '<li><a href="/advert_history.php?id='.$row['id'].'" target="_blank"><small>Список изменений</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
 if(isset($_SESSION['access'][7])){
 	echo '<li><a href="/advert_delete.php?id='.$row['md5_id'].'"><small>Удалить</small></a></li><li class="divider" style="margin:0 0"></li>';
