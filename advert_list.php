@@ -35,7 +35,7 @@ if(mysql_num_rows($query) == 0){
 ?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
 	    			<h3 class="panel-title">Список объявлений</h3>
@@ -107,9 +107,17 @@ while($row = mysql_fetch_assoc($query)){
 <div class="btn-group">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>
   <ul class="dropdown-menu" role="menu">';
-echo '<li><a href="/advert_edit.php?id='.$row['md5_id'].'"><small>Редактировать</small></a></li><li class="divider" style="margin:0 0"></li>';
+if(isset($_SESSION['access'][8])){
+	echo '<li><a href="/advert_edit2.php?id='.$row['md5_id'].'"><small>Редактировать текст</small></a></li><li class="divider" style="margin:0 0"></li>';
+}
+if(isset($_SESSION['access'][6])){
+	echo '<li><a href="/advert_edit.php?id='.$row['md5_id'].'"><small>Полное редактирование</small></a></li><li class="divider" style="margin:0 0"></li>';
+}
 if(mysql_num_rows(mysql_query("SELECT * FROM `old_advert` WHERE id_advert = $row[id]")) > 0){
 	echo '<li><a href="/advert_history.php?id='.$row['id'].'"><small>Список изменений</small></a></li><li class="divider" style="margin:0 0"></li>';
+}
+if(isset($_SESSION['access'][7])){
+	echo '<li><a href="/advert_delete.php?id='.$row['md5_id'].'"><small>Удалить</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
 echo '</ul>
 </div>

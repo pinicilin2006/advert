@@ -119,6 +119,34 @@ function edit_advert(){
 			return false;
 }
 
+function edit_advert2(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/ad_edit2.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
+function delete_advert(){
+			var a = $("#main_form").serialize();
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/ad_delete.php',
+			  data: a,
+			  success: function(data) {
+			  	$("#user_data").slideUp(400);
+			  	$("#message_result").html(data);
+			  }
+			});
+			return false;
+}
+
 function add_discount(){
 			var a = $("#main_form").serialize();
 			$.ajax({

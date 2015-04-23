@@ -83,7 +83,7 @@ require_once('template/header.html');
 													}
 												?>										
 													<div class="checkbox" style="margin-bottom:6px;margin-top:0px">
-													  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" class="calc" value="<?php echo $row['id']?>"><b><span class="text-danger"><?php echo $row['name']?></span></b></label>
+													  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" id="channel_<?php echo $i?>" class="calc channel" value="<?php echo $row['id']?>"><b><span class="text-danger"><?php echo $row['name']?></span></b></label>
 													</div>									
 												<?php
 													if($i == 3 || $i == 6 || $i == 9){
@@ -210,6 +210,11 @@ $('#released').multiDatesPicker({
 //Включаем/отключаем кнопку сохранения
 $("#speed").bind("change click", function () {
     if($(this).prop("checked")){
+    	$(".channel").prop("checked", false);
+    	for(x=2;x<10;x++){
+    		$("#channel_"+x).prop("disabled", true);
+    	}
+    	$("#channel_1").prop("checked", true);
     	$("#released").val('');
     	$("#released").multiDatesPicker("destroy");
 		$('#released').multiDatesPicker({
@@ -220,6 +225,8 @@ $("#speed").bind("change click", function () {
 		  		}
 		});    	
     } else {
+    	$(".channel").prop("checked", false);
+    	$(".channel").prop("disabled", false);
     	$("#released").val('');
 		$("#released").multiDatesPicker("destroy");
 		$('#released').multiDatesPicker({
