@@ -5,7 +5,11 @@ if(!isset($_SESSION['user_id'])){
 	header("Location: login.php");
 	exit;
 }
-if(!isset($_SESSION['access']['1']) || !isset($_SESSION['access']['3'])){
+if(!isset($_GET['id'])){
+	header("Location: list.php");
+	exit;
+}
+if(!isset($_SESSION['access']['6'])){
 	header("Location: advert_list.php");
 	exit;
 }
@@ -16,26 +20,37 @@ require_once('config.php');
 require_once('function.php');
 connect_to_base();
 require_once('template/header.html');
+$md5_id = mysql_real_escape_string($_GET['id']);
+$query = mysql_query("SELECT * FROM `advert` WHERE `md5_id` = '".$md5_id."'");
+if(mysql_num_rows($query) < 1){
+	header("Location: list.php");
+	exit;	
+}
+$advert_data = mysql_fetch_assoc($query);
+$client_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `client` WHERE `id_client` = '".$advert_data['id_client']."'"));
+$channel_data = mysql_query("SELECT * FROM `channel_advert` WHERE `id_advert` = '".$advert_data['id']."'");
+$released_data = mysql_query("SELECT * FROM `released_advert` WHERE `id_advert` = '".$advert_data['id']."'");
+$calc_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `calculation` WHERE `id` = '".$advert_data['calc_id']."'"));
 ?>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
-	    			<h3 class="panel-title"><b><span class="text-danger">ПРИЁМ ОБЪЯВЛЕНИЯ</span></b></h3>
+	    			<h3 class="panel-title"><b><span class="text-danger">ДОБАВИТЬ ОБЪЯВЛЕНИЕ</span></b></h3>
 	  			</div>
 	  			<div class="panel-body" id="user_data">
 					<form role="form" id="main_form">
 					<input type="hidden" name="md5_id" value="<?php echo md5(date("F j, Y, g:i:s "))?>">
-						<div class="row">
-								<div class="col-xs-2 col-sm-2 col-md-2 col-xs-offset-10 col-sm-offset-10 col-md-offset-10">
+						<div class="row">					
+								<div class="col-xs-3 col-sm-3 col-md-3 col-xs-offset-5 col-sm-offset-5 col-md-offset-5">
 									<div class="form-group">
 									    <select class="form-control" name="item" id="item" required>
-									   
 									    <?php					  		
-								  		$query = mysql_query("SELECT * FROM `user_items`,`item` WHERE user_items.item = item.id AND user_items.user_id = $_SESSION[user_id] AND `active` = 1 ORDER BY name");
+								  		$query=mysql_query("SELECT * FROM `item` WHERE `active` = 1 ORDER BY name");
 								  		while($row = mysql_fetch_assoc($query)){
 											echo "<option value=\"$row[id]\" ";
+											echo ($row['id'] == $advert_data['item'] ? ' selected' : '');
 											echo ">$row[name]";
 											echo "</option>";
 										}
@@ -50,19 +65,19 @@ require_once('template/header.html');
 								<div class="row">
 									<div class="col-xs-8 col-sm-8 col-md-8">
 										<div class="form-group has-feedback">					    					    
-										      <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Заказчик (Фамилия / Организация)" required>					    
+										      <input type="text" class="form-control" id="client_name" name="client_name" value="<?php echo $client_data['name']?>" placeholder="Заказчик (Фамилия / Организация)" required>					    
 										</div>
 							  		</div>
 									<div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:0px">
 										<div class="form-group has-feedback">					    					    
-										      <input type="text" class="form-control" id="client_phone" name="client_phone" placeholder="Телефон заказчика">					    
+										      <input type="text" class="form-control" id="client_phone" name="client_phone" value="<?php echo $client_data['phone']?>" placeholder="Телефон заказчика">					    
 										</div>
 							  		</div>									
 								</div>
 								<div class="row">
 									<div class="col-xs-12 col-sm-12 col-md-12" style="padding-right:0px">
 										<div class="form-group has-feedback">					    					    
-										      <textarea style="resize: none;" class="form-control calc text_advert" rows="3" id="ad" name="text_advert" placeholder="Текст объявления" required></textarea>					    
+										      <textarea style="resize: none;" class="form-control calc text_advert" rows="3" id="ad" name="text_advert" placeholder="Текст объявления" required><?php echo $advert_data['text_advert']?></textarea>					    
 										</div>
 									</div>									
 								</div>
@@ -83,7 +98,7 @@ require_once('template/header.html');
 													}
 												?>										
 													<div class="checkbox" style="margin-bottom:6px;margin-top:0px">
-													  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" id="channel_<?php echo $i?>" class="calc channel" value="<?php echo $row['id']?>"><b><span class="text-danger"><?php echo $row['name']?></span></b></label>
+													  	<label style="font-weight:normal"><input type="checkbox" name="channel[]" class="calc channel" id="channel_<?php echo $i ?>" value="<?php echo $row['id']?>"><b><span class="text-danger"><?php echo $row['name']?></span></b></label>
 													</div>									
 												<?php
 													if($i == 3 || $i == 6 || $i == 9){
@@ -109,7 +124,7 @@ require_once('template/header.html');
 									<div class="form-group has-feedback">
 										<div class="input-group">
 											<span class="input-group-addon"><span class="text-danger"><b>Всего слов:</b></span></span>	
-											<input type="text" class="form-control calc" id="words" name="words" required>
+											<input type="text" class="form-control calc" id="words" value="<?php echo $advert_data['words']?>" name="words" required>
 										</div>
 									</div>										
 								</div>
@@ -117,7 +132,7 @@ require_once('template/header.html');
 									<div class="form-group has-feedback">
 										<div class="input-group">
 											<span class="input-group-addon"><span class="text-danger"><b>Цена за день:</b></span></span>	
-											<input type="text" class="form-control calc" id="price_day" name="price_day" required>
+											<input type="text" class="form-control calc" id="price_day" value="<?php echo $calc_data['price_day']?>" name="price_day" readonly="readonly" required>
 										</div>
 									</div>										
 								</div>
@@ -135,10 +150,11 @@ require_once('template/header.html');
 											<span class="input-group-addon"><span class="text-danger"><b>Скидка:</b></span></span>	
 											    <select class="form-control calc" name="discount" id="discount" required>											   
 											    <?php					  		
-										  		$query = mysql_query("SELECT * FROM discount WHERE active = 1 ORDER BY name");
+										  		$query = mysql_query("SELECT * FROM discount ORDER BY name");
 										  		while($row = mysql_fetch_assoc($query)){
 													echo "<option value=\"$row[id]\" ";
-													echo ">$row[name]%";
+													echo ($row['id'] == $calc_data['discount_id'] ? ' selected' : '');
+													echo ">$row[name]";
 													echo "</option>";
 												}
 												?> 						    
@@ -152,13 +168,13 @@ require_once('template/header.html');
 							<div class="col-xs-12 col-sm-12 col-md-12" >
 								<div class="col-xs-6 col-sm-6 col-md-6" style="padding-left:0px;padding-right:0px">
 									<div class="form-group has-feedback">					    					    
-									      <textarea style="resize: none;" class="form-control" rows="1" id="comment" name="comment" placeholder="Комментарий"></textarea>					    
+									      <textarea style="resize: none;" class="form-control" rows="1" id="comment" name="comment" placeholder="Комментарий"><?php echo $advert_data['comment']?></textarea>					    
 									</div>
 								</div>
 								<div class="col-xs-3 col-sm-3 col-md-3">
 									<div class="form-group has-feedback" style="padding-top:4%">
 										<div class="checkbox-inline">	
-											<label><input type="checkbox" class="calc" id="speed" name="speed" value="1"><b><span class="text-danger">СРОЧНОЕ!</span></b></label>
+											<label><input type="checkbox" class="calc" id="speed" name="speed" value="1" <?php echo ( $advert_data['speed'] == 1 ? ' checked' : '')?>><b><span class="text-danger">СРОЧНОЕ!</span></b></label>
 										</div>											
 									</div>										
 								</div>
@@ -166,7 +182,7 @@ require_once('template/header.html');
 									<div class="form-group has-feedback">
 										<div class="input-group">
 										<span class="input-group-addon"><span class="text-danger"><b>СУММА К ОПЛАТЕ:</b></span></span>	
-											<input type="text" class="form-control" id="price" name="price" readonly="readonly">
+											<input type="text" class="form-control" id="price" name="price" value="<?php echo $calc_data['summa']?>" readonly="readonly">
 										</div>
 									</div>
 								</div>																							
@@ -177,9 +193,9 @@ require_once('template/header.html');
 								<hr class="hr_red">
 									<div class="form-group has-feedback pull-right">
 										<div class="checkbox-inline" >	
-											<label><input type="checkbox" id="paid" name="paid" value="1"><b><span class="text-danger">ПРИНЯТО</span></b></label>
+											<label><input type="checkbox" id="paid" name="paid" value="1" ><b><span class="text-danger">ПРИНЯТО</span></b></label>
 										</div>
-										&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" id="save_button" disabled="disabled">Сохранить объявление</button>
+										&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger" disabled="disabled" id="save_button">Сохранить объявление</button>
 									</div>								
 							</div>
 						</div>						
@@ -207,7 +223,15 @@ $('#released').multiDatesPicker({
 	    	calc();
   		}
 });
-//Действия при нажате кнопки срочно
+<?php
+//ставим чекбоксы на каналах
+while($row = mysql_fetch_assoc($channel_data)){
+	echo '$("#channel_'.$row['id_channel'].'").prop("checked", true);'."\n";
+}
+?>
+calc();
+
+//Включаем/отключаем кнопку сохранения
 $("#speed").bind("change click", function () {
     if($(this).prop("checked")){
     	$(".channel").prop("checked", false);
@@ -243,5 +267,5 @@ $("#speed").bind("change click", function () {
     $('#main_form').submit(function( event ) {
     	add_advert();
     	return false;
-    });	
+    });		
 </script>
