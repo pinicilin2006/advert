@@ -5,6 +5,8 @@ if(!isset($_SESSION['user_id'])){
 	header("Location: login.php");
 	exit;
 }
+
+
 // echo "<pre>";
 // print_r($_POST);
 // echo "</pre>";

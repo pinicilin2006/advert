@@ -27,6 +27,7 @@ if(mysql_num_rows($query) < 1){
 	exit;	
 }
 $advert_data = mysql_fetch_assoc($query);
+$user_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `user` WHERE `user_id` = '".$advert_data['who_add']."'"));
 $client_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `client` WHERE `id_client` = '".$advert_data['id_client']."'"));
 $channel_data = mysql_query("SELECT * FROM `channel_advert` WHERE `id_advert` = '".$advert_data['id']."'");
 $released_data = mysql_query("SELECT * FROM `released_advert` WHERE `id_advert` = '".$advert_data['id']."'");
@@ -42,11 +43,11 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 	  			</div>
 	  			<div class="panel-body" id="user_data">
 					<form role="form" id="main_form">
-					<input type="hidden" name="md5_id" value="<?php echo $advert_data['md5_id']?>">
+					
 						<div class="row">
 								<div class="col-xs-4 col-sm-4 col-md-4">
 									<div class="form-group">
-										<span class="text-danger"><b>ОБЪЯВЛЕНИЕ № <?php echo $advert_data['id']?> от </b></span><span class="text-danger"><b><?php echo date("d.m.Y", strtotime($advert_data['date_create']))?></b></span>
+										<span class="text-danger"><b>ОБЪЯВЛЕНИЕ № <?php echo $advert_data['id']?> от </b></span><span class="text-danger"><b><?php echo date("d.m.Y", strtotime($advert_data['date_create']))?>.<br> Объявление принял: <?php echo $user_data['first_name'] ?></b></span>
 									</div>
 								</div>						
 								<div class="col-xs-3 col-sm-3 col-md-3 col-xs-offset-5 col-sm-offset-5 col-md-offset-5">
@@ -201,12 +202,28 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 										<div class="checkbox-inline" >	
 											<label><input type="checkbox" id="paid" name="paid" value="1" <?php echo ( $advert_data['paid'] == 1 ? ' checked' : '')?>><b><span class="text-danger">ПРИНЯТО</span></b></label>
 										</div>
-										&nbsp;&nbsp;&nbsp;&nbsp;
 									</div>								
 							</div>
 						</div>						
-
-					</form>	  				
+						<hr class="hr_red">
+					</form>	
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12" >
+								<div class="pull-right">
+								<?php if(isset($_SESSION['access'][8])){ ?>													
+										<button class="btn btn-danger" value="1">Редактировать текст</button>
+								<?php
+									}
+								?>
+								<?php if(isset($_SESSION['access'][6])){ ?>										
+									<button class="btn btn-danger" value="2">Полное редактирование</button>
+								<?php
+									}
+								?>								
+									<button class="btn btn-danger" value="3">ДУБЛИРОВАТЬ</button>   
+								</div>
+							</div>
+						</div> 				
 	  			</div>
 			</div>
 			<div id="message_result"></div>
@@ -243,5 +260,19 @@ echo '$("#released").val("'.$released.'");'."\n";
 //Поле с количество дней
 echo '$("#days").val("'.$i.'");'."\n";
 ?>
-$("#main_form :input").attr("disabled", true);	
+$("#main_form :input").attr("disabled", true);
+$(".btn").bind("change click", function () {
+	var a = $(this).val();
+	var id = "<?php echo $advert_data['md5_id']?>";
+	if(a == '1'){
+		window.location.replace("/advert_edit2.php?id="+id);
+	}
+	if(a == '2'){
+		window.location.replace("/advert_edit.php?id="+id);
+	}
+	if(a == '3'){
+		window.location.replace("/advert_copy.php?id="+id);
+	}		
+
+});	
 </script>
