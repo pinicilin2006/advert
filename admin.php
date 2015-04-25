@@ -30,7 +30,7 @@ require_once('template/header.html');
             <li class="item_menu"><a class="admin_menu" id="channel_add" href="#"><em>Добавить канал выхода</em></a></li>
             <li class="item_menu"><a class="admin_menu" id="channel_edit" href="#"><em>Редактировать канал выхода</em></a></li>
             <hr class="hr_red3">
-            <li class="item_menu"><a class="admin_menu" id="discount_list" href="#"><b>СКИДКИ И ПРОЧЕЕ</b></a></li>
+            <li class="item_menu disabled"><a class="admin_menu"  href="#"><b>СКИДКИ И ПРОЧЕЕ</b></a></li>
             <li class="item_menu"><a class="admin_menu" id="discount_add" href="#"><em>Добавить скидку</em></a></li>
             <li class="item_menu"><a class="admin_menu" id="discount_edit" href="#"><em>Редактировать скидку</em></a></li>
             <li class="item_menu"><a class="admin_menu" id="speed_edit" href="#"><em>Редактировать коэфф. за срочность</em></a></li>

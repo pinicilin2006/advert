@@ -153,7 +153,7 @@ echo '</ul>
 							      <input type="hidden" name="query_text" value="<?php echo $query_text ?>">					    
 							</div>
 							<?php
-							if(isset($_POST['date_released']) && !empty($_POST['date_released'])){
+							if(isset($_POST['date_released']) && !empty($_POST['date_released']) && !empty($_POST['channel'])){
 							?>							
 							<div class="form-group">
 								<button type="submit" class="btn btn-block">Сформировать файл для выгрузки в программу</button>

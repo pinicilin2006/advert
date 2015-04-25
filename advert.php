@@ -117,7 +117,7 @@ require_once('template/header.html');
 									<div class="form-group has-feedback">
 										<div class="input-group">
 											<span class="input-group-addon"><span class="text-danger"><b>Цена за день:</b></span></span>	
-											<input type="text" class="form-control calc" id="price_day" name="price_day" required>
+											<input type="text" class="form-control calc" id="price_day" name="price_day" readonly="readonly" required>
 										</div>
 									</div>										
 								</div>

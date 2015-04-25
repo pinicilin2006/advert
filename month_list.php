@@ -34,12 +34,12 @@ $month_name = array(
 	'12' => 'Декабрь',
 	);
 ?>
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
-	    			<h3 class="panel-title">График выхода объявлений на месяц: <b><span class="text-danger"><?php echo $month_name["$month"] ?></span></b></h3>
+	    			<h3 class="panel-title"><b><span class="text-danger">График выхода объявлений на месяц: <?php echo $month_name["$month"] ?></span></b></h3>
 	  			</div>
 	  			<div class="panel-body">
 				<div class="row">
@@ -47,7 +47,7 @@ $month_name = array(
 	  				<form role="form" id="main_form" class="form-inline pull-right" method="post">				    					    
 							<div class="form-group">
 								<select class="form-control" name="channel" id="channel">
-											<option value="" <?php echo (!$_POST['channel'] || empty($_POST['channel']) ? ' selected' : '') ?>>Канал выхода</option>
+											<option value="" <?php echo (!$_POST['channel'] || empty($_POST['channel']) ? ' selected' : '') ?>>Все каналы выхода</option>
 											<?php
 											$query_channel = mysql_query("SELECT * FROM channel where active = 1");
 											while($row = mysql_fetch_assoc($query_channel)){
@@ -90,7 +90,7 @@ $month_name = array(
 		    
 							</div>															
 							<div class="form-group">
-								<button type="submit" class="btn btn-block">Фильтр</button>
+								<button type="submit" class="btn btn-block">Выбрать</button>
 							</div>																		
 	  				</form>
 	  			</div>
@@ -106,14 +106,17 @@ $month_name = array(
 		    						echo '<th>'.$x.'</th>';
 		    					}
 		    					?>
+		    					<th>Действие</th>
 				    			</tr>
 			    			</thead>
 			    			<tbody>
 <?php
-$query_advert = mysql_query("SELECT * FROM released_advert WHERE date_released LIKE '%.".$month.".".$year."' GROUP BY id_advert");
+$query_advert = mysql_query("SELECT * FROM released_advert r, channel_advert c, advert a WHERE r.date_released LIKE '%.".$month.".".$year."' AND r.id_advert = c.id_advert AND r.id_advert = a.id AND c.id_channel ".(empty($_POST['channel']) ? '>0' : "= $_POST[channel]")."
+ GROUP BY r.id_advert");
 $num_in_day = array();
 $num_in_day[$x] = 0;
-$num_all = 0;	
+$num_all = 0;
+$advert_all = mysql_num_rows($query_advert);	
 	while($advert = mysql_fetch_assoc($query_advert)){
 		echo "<tr><td>$advert[id_advert]</td>";
 		$x = 0;
@@ -129,6 +132,7 @@ $num_all = 0;
 				echo '<td></td>';
 			}
 		}
+		echo '<td><center><a href="/advert_show.php?id='.$advert['md5_id'].'" target="_blank">Просмотр</a></center></td>';
 		echo '</tr>';
 	}
 echo "<tr><td><b>Всего</b>:</td>";
@@ -141,11 +145,12 @@ echo "<tr><td><b>Всего</b>:</td>";
 		}
 		echo '</td>';
 	}
-echo '<tr>';
+echo '<td></td><tr>';
 ?>	    			
 			    			</tbody>
 			    		</table>
-			    		Всего объявлений 
+			    		<b><span class="text-danger">Всего объявлений в этом месяце: <?php echo $advert_all?></span></b><br>
+			    		<b><span class="text-danger">Всего выходов объявлений в этом месяце: <?php echo $num_all?></span></b>
 			    	</div>				
 	  			</div>	  			
 			</div>

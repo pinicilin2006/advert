@@ -45,7 +45,7 @@ $query = "UPDATE `advert` SET text_advert = '".$text_advert."', paid  = '".$paid
 //Обновляем объявление в базе
 if(mysql_query($query)){
 	//если успешно то записываем старый текст в лог
-	mysql_query("INSERT INTO `old_advert` (id_advert,text_advert,who_edit) VALUES('".$id_advert."','".$advert_data_old['text_advert']."','".$_SESSION['user_id']."')");
+	mysql_query("INSERT INTO `old_advert` (id_advert,text_advert,paid,who_edit) VALUES('".$id_advert."','".$advert_data_old['text_advert']."','".$advert_data_old['paid']."','".$_SESSION['user_id']."')");
 } else {
 		echo "<p class=\"text-danger\">Произошла ошибка при добавление объявления в базу данных.</p>";
 		exit();	
