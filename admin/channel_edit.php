@@ -13,7 +13,7 @@ connect_to_base();
 					  		<select class="form-control" name="channel_id" id="channel_id" required>
 					  		<option value="" disabled selected>Выберите канал выхода</option>
 					  		<?php
-					  		$query=mysql_query("SELECT * FROM `channel` ORDER BY `name`");
+					  		$query=mysql_query("SELECT * FROM `channel` ORDER BY `id`");
 					  		while($row = mysql_fetch_assoc($query)){
 								echo "<option value=\"$row[id]\" ";
 								echo ">$row[name]";

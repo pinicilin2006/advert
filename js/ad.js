@@ -16,8 +16,11 @@ $("#item").focus();
 	    }
   });
 //Подсчёт слов
-$(document).on("keyup", ".text_advert", function(){
-	num_words();
+$(document).on("keyup keydown", ".text_advert", function(){
+	if(event.keyCode == 13){
+        return false;
+    }
+    num_words();
 	calc();
 });
 //Подсчёт стоимости

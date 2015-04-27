@@ -106,7 +106,8 @@ $month_name = array(
 		    						echo '<th>'.$x.'</th>';
 		    					}
 		    					?>
-		    					<th>Действие</th>
+		    					<th><center>Всего</center></th>
+		    					<th><center>Действие</center></th>
 				    			</tr>
 			    			</thead>
 			    			<tbody>
@@ -120,6 +121,7 @@ $advert_all = mysql_num_rows($query_advert);
 	while($advert = mysql_fetch_assoc($query_advert)){
 		echo "<tr><td>$advert[id_advert]</td>";
 		$x = 0;
+		$k = 0;
 		for($x=1;$x<=$day_in_month;$x++){
 			if($x < 10){
 				$x = "0".$x;
@@ -128,10 +130,13 @@ $advert_all = mysql_num_rows($query_advert);
 				echo '<td class="success"></td>';
 				$num_in_day[$x] = $num_in_day[$x] + 1;
 				$num_all = $num_all + 1;
+				$k++;
 			} else {
 				echo '<td></td>';
 			}
+			
 		}
+		echo "<td><center><b>$k</b></center></td>";
 		echo '<td><center><a href="/advert_show.php?id='.$advert['md5_id'].'" target="_blank">Просмотр</a></center></td>';
 		echo '</tr>';
 	}
@@ -145,7 +150,7 @@ echo "<tr><td><b>Всего</b>:</td>";
 		}
 		echo '</td>';
 	}
-echo '<td></td><tr>';
+echo '<td><center><b>'.$num_all.'</b></center></td><tr>';
 ?>	    			
 			    			</tbody>
 			    		</table>

@@ -136,5 +136,5 @@ foreach ($released as $key => $value) {
 		exit();			
 	}
 }
-echo '<div class="alert alert-success text-center">Объявление успешно отредактировано!</div>';
+echo '<div class="alert alert-success text-center">Объявление успешно отредактировано!<br><a href="/advert_show.php?id='.$md5_id.'">Просмотр объявления</a></div>';
 ?>

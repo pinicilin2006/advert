@@ -15,7 +15,7 @@ require_once('../function.php');
 connect_to_base();
 $err_text='';
 foreach($_POST as $key => $val){
-	if(empty($val)){
+	if(empty($val) && $val != 0){
 		continue;
 	}	
 	$$key = mysql_escape_string($val);
@@ -24,7 +24,7 @@ $err_text = '';
 if(!$channel){
 	$err_text .= "<li class=\"text-danger\">Отсутствует название канала выхода</li>";
 }
-if(!$price){
+if(isset($price)){
 	$err_text .= "<li class=\"text-danger\">Отсутствует стоимость слова</li>";
 }
 if(mysql_num_rows(mysql_query("SELECT * FROM `channel` WHERE `name` = '".$channel."'"))>0){

@@ -120,7 +120,9 @@ while($row = mysql_fetch_assoc($query)){
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>
   <ul class="dropdown-menu" role="menu">';
   echo '<li><a href="/advert_show.php?id='.$row['md5_id'].'" target="_blank"><small>Просмотр</small></a></li><li class="divider" style="margin:0 0"></li>';
-echo '<li><a href="/advert_copy.php?id='.$row['md5_id'].'"><small>Дублировать</small></a></li><li class="divider" style="margin:0 0"></li>';
+if(isset($_SESSION['access'][12])){
+	echo '<li><a href="/advert_copy.php?id='.$row['md5_id'].'"><small>Дублировать</small></a></li><li class="divider" style="margin:0 0"></li>';
+}
 if(isset($_SESSION['access'][8])){
 	echo '<li><a href="/advert_edit2.php?id='.$row['md5_id'].'"><small>Редактировать текст</small></a></li><li class="divider" style="margin:0 0"></li>';
 }

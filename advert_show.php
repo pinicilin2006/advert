@@ -96,6 +96,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 									<div class="col-xs-12 col-sm-12 col-md-12" >
 												<?php
 												$query = mysql_query("SELECT * FROM `channel` WHERE`active` = 1 ORDER BY name");
+												$all_channel = mysql_num_rows($query);
 												$i = 0;
 												while($row = mysql_fetch_assoc($query)){
 													$i++;
@@ -112,6 +113,23 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 														echo '</div></div>';
 													}
 												}
+												if($all_channel < 9){
+													$i++;
+													for($i;$i<=9;$i++){
+														if($i == 1 || $i == 4 || $i == 7){
+															echo '<div class="col-xs-4 col-sm-4 col-md-4" >';
+															echo '<div class="form-group has-feedback">';
+														}
+														?>
+														<div class="checkbox" style="margin-bottom:6px;margin-top:0px">
+														  	<label style="font-weight:normal"></label>
+														</div>
+														<?php
+														if($i == 3 || $i == 6 || $i == 9){
+															echo '</div></div>';
+														}																												
+													}
+												}												
 												?>								
 									</div>									
 								</div>

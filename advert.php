@@ -5,7 +5,7 @@ if(!isset($_SESSION['user_id'])){
 	header("Location: login.php");
 	exit;
 }
-if(!isset($_SESSION['access']['1']) || !isset($_SESSION['access']['3'])){
+if(!isset($_SESSION['access'][12])){
 	header("Location: advert_list.php");
 	exit;
 }
@@ -28,7 +28,7 @@ require_once('template/header.html');
 					<form role="form" id="main_form">
 					<input type="hidden" name="md5_id" value="<?php echo md5(date("F j, Y, g:i:s "))?>">
 						<div class="row">
-								<div class="col-xs-2 col-sm-2 col-md-2 col-xs-offset-10 col-sm-offset-10 col-md-offset-10">
+								<div class="col-xs-4 col-sm-4 col-md-4 col-xs-offset-8 col-sm-offset-8 col-md-offset-8">
 									<div class="form-group">
 									    <select class="form-control" name="item" id="item" required>
 									   
@@ -73,8 +73,9 @@ require_once('template/header.html');
 								<div class="row">
 									<div class="col-xs-12 col-sm-12 col-md-12" >
 												<?php
-												$query = mysql_query("SELECT * FROM `channel`,`user_channels` WHERE user_channels.channel = channel.id AND user_channels.user_id = $_SESSION[user_id] AND `active` = 1 ORDER BY user_channels.channel");
+												$query = mysql_query("SELECT * FROM `channel`,`user_channels` WHERE user_channels.channel = channel.id AND user_channels.user_id = $_SESSION[user_id] AND `active` = 1 ORDER BY id");
 												$i = 0;
+												$all_channel = mysql_num_rows($query);
 												while($row = mysql_fetch_assoc($query)){
 													$i++;
 													if($i == 1 || $i == 4 || $i == 7){
@@ -88,6 +89,23 @@ require_once('template/header.html');
 												<?php
 													if($i == 3 || $i == 6 || $i == 9){
 														echo '</div></div>';
+													}
+												}
+												if($all_channel < 9){
+													$i++;
+													for($i;$i<=9;$i++){
+														if($i == 1 || $i == 4 || $i == 7){
+															echo '<div class="col-xs-4 col-sm-4 col-md-4" >';
+															echo '<div class="form-group has-feedback">';
+														}
+														?>
+														<div class="checkbox" style="margin-bottom:6px;margin-top:0px">
+														  	<label style="font-weight:normal"></label>
+														</div>
+														<?php
+														if($i == 3 || $i == 6 || $i == 9){
+															echo '</div></div>';
+														}																												
 													}
 												}
 												?>								
@@ -133,12 +151,12 @@ require_once('template/header.html');
 									<div class="form-group has-feedback">
 										<div class="input-group">
 											<span class="input-group-addon"><span class="text-danger"><b>Скидка:</b></span></span>	
-											    <select class="form-control calc" name="discount" id="discount" required>											   
+											    <select class="form-control calc" name="discount" id="discount" <?php echo (isset($_SESSION['access'][11]) ? '' : ' disabled="disabled"') ?> required>											   
 											    <?php					  		
 										  		$query = mysql_query("SELECT * FROM discount WHERE active = 1 ORDER BY name");
 										  		while($row = mysql_fetch_assoc($query)){
 													echo "<option value=\"$row[id]\" ";
-													echo ">$row[name]%";
+													echo ">$row[name]";
 													echo "</option>";
 												}
 												?> 						    

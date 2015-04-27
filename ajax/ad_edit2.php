@@ -50,5 +50,5 @@ if(mysql_query($query)){
 		echo "<p class=\"text-danger\">Произошла ошибка при добавление объявления в базу данных.</p>";
 		exit();	
 }
-echo '<div class="alert alert-success text-center">Объявление успешно отредактировано!</div>';
+echo '<div class="alert alert-success text-center">Объявление успешно отредактировано!<br><a href="/advert_show.php?id='.$md5_id.'">Просмотр объявления</a></div>';
 ?>

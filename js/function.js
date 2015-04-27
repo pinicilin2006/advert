@@ -230,13 +230,15 @@ function num_days(){
 			return false;
 }
 
-function num_words(){
+function num_words(){	
 			var a = $(".text_advert").val();
 			var arrWords = a.split(' ');
 			var i = 0;
 			for(var k in arrWords){
-				if(arrWords[k].length > 2){
-					i++;
+				if(arrWords[k].length > 2 ){
+					if(arrWords[k] != 'Тел.' && arrWords[k] != 'Тел.:'){//Слова исклбючения которые не засчитываются при подсчёте слов объявления
+						i++;
+					}
 				}
 			}
 			$("#words").val(i);
