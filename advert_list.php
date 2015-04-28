@@ -130,7 +130,7 @@ if(isset($_SESSION['access'][6])){
 	echo '<li><a href="/advert_edit.php?id='.$row['md5_id'].'"><small>Полное редактирование</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
 if(mysql_num_rows(mysql_query("SELECT * FROM `old_advert` WHERE id_advert = $row[id]")) > 0){
-	echo '<li><a href="/advert_history.php?id='.$row['id'].'" target="_blank"><small>Список изменений</small></a></li><li class="divider" style="margin:0 0"></li>';
+	//echo '<li><a href="/advert_history.php?id='.$row['id'].'" target="_blank"><small>Список изменений</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
 if(isset($_SESSION['access'][7])){
 	echo '<li><a href="/advert_delete.php?id='.$row['md5_id'].'"><small>Удалить</small></a></li><li class="divider" style="margin:0 0"></li>';
@@ -186,4 +186,5 @@ echo '</ul>
 <script src="/js/ad.js"></script>
 <script type="text/javascript">
 $("#date_released").datepicker();
+$("#contract_table").tablesorter();
 </script>

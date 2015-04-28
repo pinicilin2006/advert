@@ -47,7 +47,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 						<div class="row">
 								<div class="col-xs-4 col-sm-4 col-md-4">
 									<div class="form-group">
-										<span class="text-danger"><b>ОБЪЯВЛЕНИЕ № <?php echo $advert_data['id']?> от </b></span><span class="text-danger"><b><?php echo date("d.m.Y", strtotime($advert_data['date_create']))?>.<br> Объявление принял: <?php echo $user_data['first_name'] ?></b></span>
+										<span class="text-danger"><b>№ <?php echo $advert_data['id']?> от </b></span><span class="text-danger"><b><?php echo date("d.m.Y", strtotime($advert_data['date_create']))?>.<br>Принял: <?php echo $user_data['first_name'] ?></b></span>
 									</div>
 								</div>						
 								<div class="col-xs-3 col-sm-3 col-md-3 col-xs-offset-5 col-sm-offset-5 col-md-offset-5">
@@ -244,7 +244,59 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 						</div> 				
 	  			</div>
 			</div>
-			<div id="message_result"></div>
+<?php
+$id_advert = $advert_data['id'];			
+$query = "SELECT old_advert.*,user.first_name,user.second_name,user.third_name FROM `old_advert`,`user`  WHERE old_advert.id_advert = $id_advert AND old_advert.who_edit = user.user_id  ORDER BY id";
+//echo $query;
+$query = mysql_query($query);
+if(mysql_num_rows($query) == 0){
+	//echo "<span class=\"text-danger\"><center>Отсутствуют объявления в базе данных.</center></span>";
+	exit();	
+}
+?>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+	  			<div class="panel-heading">
+	    			<h3 class="panel-title"><span class="text-danger"><b>Список версий объявления</b></span></h3>
+	  			</div>
+	  			<div class="panel-body" id="user_data">
+	  			<div class="row">
+	  			<hr class="hr_red2">
+					<div class="table-responsive">
+		    			<table class='table table-hover table-responsive table-condensed table-bordered' id='contract_table'>
+		    				<thead>
+		    					<tr>
+				    				<th style = 'cursor: pointer;'>Дата изменения</th>
+				    				<th style = 'cursor: pointer;'>Текст</th>
+				    				<th style = 'cursor: pointer;'>Оплачено</th>
+				    				<th style = 'cursor: pointer;'>Кто менял текст</th>
+				    			</tr>
+			    			</thead>
+			    			<tbody>
+<?php
+while($row = mysql_fetch_assoc($query)){
+	echo '<tr>';
+	echo "<td>".date("d.m.Y H:i:s", strtotime($row['date_edit']))."</td>";
+	echo "<td>".$row['text_advert']."</td>";
+	echo "<td>".($row['paid'] == 1 ? 'Да' : 'Нет')."</td>";
+	echo "<td>".$row['second_name']." ".$row['first_name']." ".$row['third_name']."</td>";	
+	echo "</tr>";
+}
+?>			    			
+			    			</tbody>
+			    		</table> 
+			    	</div>				
+	  			</div>
+	  			</div>	  			
+			</div>
+		</div>
+	</div>
+
+
+
+
 		</div>
 	</div>
 </div>
