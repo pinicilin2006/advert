@@ -55,7 +55,13 @@
             <li <?php echo ($_SERVER['PHP_SELF'] == "/advert.php" ?  " class=\"active\"" : "") ?>> <a href="/advert.php">Новое объявление</a></li>
            <!--  <li <?php echo ($_SERVER['PHP_SELF'] == "/advert_edit.php" ?  " class=\"active\"" : "") ?>> <a href="/advert_edit.php">Редактировать объявление</a></li>  -->
             <li <?php echo ($_SERVER['PHP_SELF'] == "/advert_list.php" ?  " class=\"active\"" : "") ?>> <a href="/advert_list.php">Общий список</a></li>
+            <?php 
+            if($_SESSION['access'][10]){
+            ?>           
             <li <?php echo ($_SERVER['PHP_SELF'] == "/month_list.php" ?  " class=\"active\"" : "") ?>> <a href="/month_list.php">График выходов</a></li>
+            <?php
+        	}
+            ?>            
             <?php 
             if($_SESSION['access'][1]){
             ?>
