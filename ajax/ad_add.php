@@ -114,7 +114,7 @@ foreach ($channel as $key => $value) {
 }
 //Добавляем даты выхода объявления
 foreach ($released as $key => $value) {
-	if(mysql_query("INSERT INTO `released_advert` (id_advert,date_released) VALUES('".$id_advert."','".rtrim($value, ",")."')")){
+	if(mysql_query("INSERT INTO `released_advert` (id_advert,date_released,date_unix) VALUES('".$id_advert."','".rtrim($value, ",")."','".strtotime(rtrim($value, ","))."')")){
 		/////
 	} else {
 		echo "<p class=\"text-danger\">Произошла ошибка при добавление даты выхода объявления.</p>";

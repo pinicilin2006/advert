@@ -90,7 +90,7 @@ $month_name = array(
 		    
 							</div>															
 							<div class="form-group">
-								<button type="submit" class="btn btn-block">Выбрать</button>
+								<button type="submit" class="btn btn-block btn-danger">Выбрать</button>
 							</div>																		
 	  				</form>
 	  			</div>
@@ -168,7 +168,7 @@ echo '<td><center><b>'.$num_all.'</b></center></td><tr>';
 // echo '</pre>';
 ?>
 <div class="footer navbar-fixed-bottom text-center">
-  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a> Все права защищены.</small>
+  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
 </html>

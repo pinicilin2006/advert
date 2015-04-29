@@ -229,79 +229,65 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 							<div class="col-xs-12 col-sm-12 col-md-12" >
 								<div class="pull-right">
 								<?php if(isset($_SESSION['access'][8])){ ?>													
-										<button class="btn btn-danger" value="1">Редактировать текст</button>
+										<button class="btn btn-danger" value="1">РЕДАКТИРОВАТЬ</button>
 								<?php
 									}
 								?>
+								<button class="btn btn-danger" value="3">ДУБЛИРОВАТЬ</button>   
 								<?php if(isset($_SESSION['access'][6])){ ?>										
-									<button class="btn btn-danger" value="2">Полное редактирование</button>
+									<button class="btn btn-danger" value="2">ИСПРАВИТЬ</button>
 								<?php
 									}
-								?>								
-									<button class="btn btn-danger" value="3">ДУБЛИРОВАТЬ</button>   
+								?>
+								<?php if(isset($_SESSION['access'][7])){ ?>										
+									<button class="btn btn-danger" value="2">УДАЛИТЬ</button>
+								<?php
+									}
+								?>																
+									
 								</div>
 							</div>
-						</div> 				
+						</div>				
 	  			</div>
 			</div>
-<?php
-$id_advert = $advert_data['id'];			
-$query = "SELECT old_advert.*,user.first_name,user.second_name,user.third_name FROM `old_advert`,`user`  WHERE old_advert.id_advert = $id_advert AND old_advert.who_edit = user.user_id  ORDER BY id";
-//echo $query;
-$query = mysql_query($query);
-if(mysql_num_rows($query) == 0){
-	//echo "<span class=\"text-danger\"><center>Отсутствуют объявления в базе данных.</center></span>";
-	exit();	
-}
-?>
+		</div>
+	</div>
 
 	<div class="row">
-		<div class="col-md-12">
-			<div class="panel panel-default">
-	  			<div class="panel-heading">
-	    			<h3 class="panel-title"><span class="text-danger"><b>Список версий объявления</b></span></h3>
-	  			</div>
-	  			<div class="panel-body" id="user_data">
-	  			<div class="row">
-	  			<hr class="hr_red2">
-					<div class="table-responsive">
-		    			<table class='table table-hover table-responsive table-condensed table-bordered' id='contract_table'>
-		    				<thead>
-		    					<tr>
-				    				<th style = 'cursor: pointer;'>Дата изменения</th>
-				    				<th style = 'cursor: pointer;'>Текст</th>
-				    				<th style = 'cursor: pointer;'>Оплачено</th>
-				    				<th style = 'cursor: pointer;'>Кто менял текст</th>
-				    			</tr>
-			    			</thead>
-			    			<tbody>
-<?php
-while($row = mysql_fetch_assoc($query)){
-	echo '<tr>';
-	echo "<td>".date("d.m.Y H:i:s", strtotime($row['date_edit']))."</td>";
-	echo "<td>".$row['text_advert']."</td>";
-	echo "<td>".($row['paid'] == 1 ? 'Да' : 'Нет')."</td>";
-	echo "<td>".$row['second_name']." ".$row['first_name']." ".$row['third_name']."</td>";	
-	echo "</tr>";
-}
-?>			    			
-			    			</tbody>
-			    		</table> 
-			    	</div>				
-	  			</div>
-	  			</div>	  			
+		<div class="col-md-8 col-md-offset-2" >
+			<div class="table-responsive">			
+				<table class='table table-hover table-responsive table-condensed table-bordered' id='contract_table'>
+					<thead>
+						<tr>
+		    				<th style = 'cursor: pointer;'>Дата изменения</th>
+		    				<th style = 'cursor: pointer;'>Текст</th>
+		    				<th style = 'cursor: pointer;'>Оплачено</th>
+		    				<th style = 'cursor: pointer;'>Кто менял текст</th>
+		    			</tr>
+	    			</thead>
+	    			<tbody>
+	    				<?php		
+						$query_history = "SELECT old_advert.*,user.first_name,user.second_name,user.third_name FROM `old_advert`,`user`  WHERE old_advert.id_advert = $advert_data[id] AND old_advert.who_edit = user.user_id  ORDER BY id";
+						//echo $query;
+						$query_history = mysql_query($query_history);
+						while($row_history = mysql_fetch_assoc($query_history)){
+							echo '<tr>';
+							echo "<td>".date("d.m.Y H:i:s", strtotime($row_history['date_edit']))."</td>";
+							echo "<td>".$row_history['text_advert']."</td>";
+							echo "<td>".($row_history['paid'] == 1 ? 'Да' : 'Нет')."</td>";
+							echo "<td>".$row_history['second_name']." ".$row_history['first_name']." ".$row_history['third_name']."</td>";	
+							echo "</tr>";
+						}							    				
+	    				?>
+	    			</tbody>									
+				</table>
 			</div>
 		</div>
-	</div>
+	</div> 		
 
-
-
-
-		</div>
-	</div>
 </div>
 <div class="footer navbar-fixed-bottom text-center">
-  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a> Все права защищены.</small>
+  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
 </html>
@@ -343,6 +329,5 @@ $(".btn").bind("change click", function () {
 	if(a == '3'){
 		window.location.replace("/advert_copy.php?id="+id);
 	}		
-
-});	
+});
 </script>

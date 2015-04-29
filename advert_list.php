@@ -15,20 +15,40 @@ require_once('function.php');
 connect_to_base();
 require_once('template/header.html');
 //Запрос по умолчанию при пустых полях фильтра
-$query = "SELECT advert.*, client.*, item.name item_name FROM `advert`,`client`,`item` WHERE advert.id_client = client.id_client AND item.id = advert.item";
+if(isset($_POST['date_released_start']) || isset($_POST['date_released_end'])){
+	if(!empty($_POST['date_released_start'])){
+		$date_start = strtotime($_POST['date_released_start']);
+	}
+	if(!empty($_POST['date_released_end'])){
+		$date_end = strtotime($_POST['date_released_end']);
+	}
+	if($date_start && $date_end && $date_start > $date_end){
+	echo "<span class=\"text-danger\"><center>Дата окончания выходов не может быть меньше даты начала выходов.</center></span>";
+	exit();			
+	}
+	if(isset($date_start) || isset($date_end)){
+		$date_released = 1;
+	}
+}
+$query = "SELECT advert.*, client.*, item.name item_name FROM `advert`,`client`,`item` WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.date_create>DATE_ADD(now(), INTERVAL -31 DAY)";
 //$query = "SELECT advert.*,client.*,item.name item_name,"
 if(isset($_POST['channel']) && !empty($_POST['channel'])){
 	$query = "SELECT advert.*, client.*, item.name item_name,channel_advert.* FROM `advert`,`client`,`item`,channel_advert WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.id = channel_advert.id_advert AND channel_advert.id_channel = $_POST[channel]";
 }
-if(isset($_POST['date_released']) && !empty($_POST['date_released']) && empty($_POST['channel'])){
-	$query = "SELECT advert.*, client.*, item.name item_name, released_advert.* FROM `advert`,`client`,`item`, `released_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id AND released_advert.date_released = '".$_POST['date_released']."'";
+if(isset($date_released) && empty($_POST['channel'])){
+	$query = "SELECT distinct advert.id, advert.md5_id, advert.date_create, advert.paid, advert.text_advert, advert.words, advert.price, client.name, item.name item_name FROM `advert`,`client`,`item`, `released_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id ".(isset($date_start) ? " AND released_advert.date_unix >= $date_start" : '')." ".(isset($date_end) ? " AND released_advert.date_unix <= $date_end" : '')." ";
+	//echo $query;
 }
-if(isset($_POST['date_released']) && !empty($_POST['date_released']) && !empty($_POST['channel'])){
-	$query = "SELECT advert.*, client.*, item.name item_name, released_advert.*, channel_advert.* FROM `advert`,`client`,`item`, `released_advert`, `channel_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id AND released_advert.date_released = '".$_POST['date_released']."' AND channel_advert.id_channel = $_POST[channel] AND advert.id = channel_advert.id_advert";
+if(isset($date_released) && !empty($_POST['channel'])){
+	$query = "SELECT distinct advert.id, advert.md5_id, advert.date_create, advert.paid, advert.text_advert, advert.words, advert.price, client.name, item.name item_name FROM `advert`,`client`,`item`, `released_advert`, `channel_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id ".(isset($date_start) ? " AND released_advert.date_unix >= $date_start" : '')." ".(isset($date_end) ? " AND released_advert.date_unix <= $date_end" : '')." AND channel_advert.id_channel = $_POST[channel] AND advert.id = channel_advert.id_advert";
+	//echo $query;
 }
 
 if(isset($_POST['paid'])){
 	$query .= " AND paid = 1";
+}
+if(isset($_POST['item'])){
+	$query .= " AND advert.item = $_POST[item]";
 }
 if(!isset($_SESSION['access'][9])){
 	$query .= " AND advert.who_add = $_SESSION[user_id]";
@@ -56,7 +76,23 @@ if(mysql_num_rows($query) == 0){
 	  			<hr class="hr_red">
 	  				<form role="form" id="main_form" class="form-inline pull-right" method="post">
 							<div class="form-group">					    					    
-							      <input type="text" class="form-control" id="date_released" name="date_released" value="<?php echo $_POST['date_released']?>" placeholder="Дата выхода">					    
+							      <input type="text" class="form-control date_released" id="date_released_start" name="date_released_start" value="<?php echo $_POST['date_released_start']?>" placeholder="Дата выхода, с">					    
+							</div>
+							<div class="form-group">					    					    
+							      <input type="text" class="form-control date_released" id="date_released_end" name="date_released_end" value="<?php echo $_POST['date_released_end']?>" placeholder="Дата выхода, по">					    
+							</div>							
+							<div class="form-group">
+								<select class="form-control" name="item" id="item">
+											<option value="" <?php echo (!$_POST['item'] || empty($_POST['item']) ? ' selected' : '') ?>>Пункт приёма</option>
+											<?php
+											$query_item = mysql_query("SELECT * FROM item where active = 1");
+											while($row = mysql_fetch_assoc($query_item)){
+											?>
+									    	<option value="<?php echo $row['id']?>" <?php echo ($_POST['item'] == $row['id'] ? ' selected' : '') ?> ><?php echo $row['name']?></option>											
+											<?php
+											}
+											?>
+								</select>
 							</div>
 							<div class="form-group">
 								<select class="form-control" name="channel" id="channel">
@@ -70,14 +106,14 @@ if(mysql_num_rows($query) == 0){
 											}
 											?>
 								</select>
-							</div>
+							</div>							
 							<div class="form-group ">
 								<div class="checkbox-inline" style="padding-top:2%">	
-									&nbsp;&nbsp;&nbsp;<label><input type="checkbox" name="paid" value="1" <?php echo ('1' == $_POST['paid'] ? ' checked' : '')?>>Оплачено</label>&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;<label><input type="checkbox" name="paid" value="1" <?php echo ('1' == $_POST['paid'] ? ' checked' : '')?>>В эфир</label>&nbsp;&nbsp;&nbsp;
 								</div>
 							</div>
 							<div class="form-group">
-								<button type="submit" class="btn btn-block">Отфильтровать объявления</button>
+								<button type="submit" class="btn btn-block btn-danger">Выбрать</button>
 							</div>																		
 	  				</form>
 	  			</div>
@@ -88,13 +124,13 @@ if(mysql_num_rows($query) == 0){
 		    				<thead>
 		    					<tr>
 				    				<th style = 'cursor: pointer;'>№ </th>
-				    				<th style = 'cursor: pointer;'>Дата создания </th>
-				    				<th style = 'cursor: pointer;'>Нименование клиента</th>
+				    				<th style = 'cursor: pointer;'>Дата приёма </th>
 									<th style = 'cursor: pointer;'>Пункт приёма</th>
+				    				<th style = 'cursor: pointer;'>Клиент</th>									
 				    				<th style = 'cursor: pointer;'>Текст</th>
-				    				<th style = 'cursor: pointer;'>Кол-во слов</th>
-				    				<th style = 'cursor: pointer;'>кол-во дней </th>
-				    				<th style = 'cursor: pointer;'>Стоимость</th>
+				    				<th style = 'cursor: pointer;'>Слов</th>
+				    				<th style = 'cursor: pointer;'>Дней </th>
+				    				<th style = 'cursor: pointer;'>Сумма</th>
 				    				<th style = 'cursor: pointer;'>Действия</th>
 				    			</tr>
 			    			</thead>
@@ -108,8 +144,8 @@ while($row = mysql_fetch_assoc($query)){
 	}
 	echo "<td>".$row['id']."</td>";
 	echo "<td>".date("d.m.Y", strtotime($row['date_create']))."</td>";
-	echo "<td>".$row['name']."</td>";
 	echo "<td>".$row['item_name']."</td>";
+	echo "<td>".$row['name']."</td>";
 	echo "<td>".$row['text_advert']."</td>";
 	echo "<td>".$row['words']."</td>";
 	echo "<td>".mysql_num_rows(mysql_query("SELECT * FROM `released_advert` WHERE `id_advert` = $row[id]"))."</td>";
@@ -158,7 +194,7 @@ echo '</ul>
 							if(isset($_POST['date_released']) && !empty($_POST['date_released']) && !empty($_POST['channel'])){
 							?>							
 							<div class="form-group">
-								<button type="submit" class="btn btn-block">Сформировать файл для выгрузки в программу</button>
+								<button type="submit" class="btn btn-block btn-danger">Сформировать файл для выгрузки в программу</button>
 							</div>
 							<?php
 							}
@@ -169,7 +205,7 @@ echo '</ul>
 							      <input type="hidden" name="query_text" value="<?php echo $query_text ?>">					    
 							</div>
 							<div class="form-group">
-								<button type="submit" class="btn btn-block">ЭКСПОРТ в Exel</button>
+								<button type="submit" class="btn btn-block btn-danger">ЭКСПОРТ в Exel</button>
 							</div>																									
 	  				</form>	  				
 	  			</div>	  			
@@ -178,13 +214,13 @@ echo '</ul>
 	</div>
 </div>
 <div class="footer navbar-fixed-bottom text-center">
-  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a> Все права защищены.</small>
+  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
 </html>
 <!-- вставляем скрипты общие для формы добавления и редактирования -->
 <script src="/js/ad.js"></script>
 <script type="text/javascript">
-$("#date_released").datepicker();
+$(".date_released").datepicker();
 $("#contract_table").tablesorter();
 </script>

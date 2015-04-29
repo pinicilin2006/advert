@@ -28,16 +28,20 @@ $summa = 0;
 $price_day = 0;
 if($speed){
 	$speed_data = mysql_fetch_assoc(mysql_query("SELECT * FROM speed WHERE id = 4"));
+	$days = $days -1;
 }
 $n = 0;
 foreach ($channel as $key => $value) {
 	$n++;
 	$channel_data = '';
 	$channel_data = mysql_fetch_assoc(mysql_query("SELECT * FROM channel WHERE id = $value"));
+	// //Считаем для первого дня при установленной галочке за срочность
+	// if($speed && $n == 1){
+	// 	$summa = $summa * $speed_data['koef'];
+	// }	
 	$summa = $summa + ($days * $words * $channel_data['price']);
-	//Считаем для первого дня при установленной галочке за срочность
-	if($speed && $n == 1){
-		$summa = $summa * $speed_data['koef'];
+	if($speed){
+		$summa = $summa + ($words * $speed_data['koef'] * $channel_data['price']);
 	}
 	//Определяем стоимость в день
 	$price_day = $price_day + $channel_data['price'] * $words;

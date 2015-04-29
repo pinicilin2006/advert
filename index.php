@@ -37,7 +37,7 @@ require_once('template/header.html');
 	</div>
 </div>
 <div class="footer navbar-fixed-bottom text-center">
-  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a> Все права защищены.</small>
+  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
 </html>
