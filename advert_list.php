@@ -36,11 +36,11 @@ if(isset($_POST['channel']) && !empty($_POST['channel'])){
 	$query = "SELECT advert.*, client.*, item.name item_name,channel_advert.* FROM `advert`,`client`,`item`,channel_advert WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.id = channel_advert.id_advert AND channel_advert.id_channel = $_POST[channel]";
 }
 if(isset($date_released) && empty($_POST['channel'])){
-	$query = "SELECT distinct advert.id, advert.md5_id, advert.date_create, advert.paid, advert.text_advert, advert.words, advert.price, client.name, item.name item_name FROM `advert`,`client`,`item`, `released_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id ".(isset($date_start) ? " AND released_advert.date_unix >= $date_start" : '')." ".(isset($date_end) ? " AND released_advert.date_unix <= $date_end" : '')." ";
-	echo $query;
+	$query = "SELECT distinct advert.id, advert.md5_id, advert.date_create, advert.paid, advert.text_advert, advert.words, advert.price, advert.who_add client.name, item.name item_name FROM `advert`,`client`,`item`, `released_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id ".(isset($date_start) ? " AND released_advert.date_unix >= $date_start" : '')." ".(isset($date_end) ? " AND released_advert.date_unix <= $date_end" : '')." ";
+	//echo $query;
 }
 if(isset($date_released) && !empty($_POST['channel'])){
-	$query = "SELECT distinct advert.id, advert.md5_id, advert.date_create, advert.paid, advert.text_advert, advert.words, advert.price, client.name, item.name item_name FROM `advert`,`client`,`item`, `released_advert`, `channel_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id ".(isset($date_start) ? " AND released_advert.date_unix >= $date_start" : '')." ".(isset($date_end) ? " AND released_advert.date_unix <= $date_end" : '')." AND channel_advert.id_channel = $_POST[channel] AND advert.id = channel_advert.id_advert";
+	$query = "SELECT distinct advert.id, advert.md5_id, advert.date_create, advert.paid, advert.text_advert, advert.words, advert.price, advert.who_add client.name, item.name item_name FROM `advert`,`client`,`item`, `released_advert`, `channel_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id ".(isset($date_start) ? " AND released_advert.date_unix >= $date_start" : '')." ".(isset($date_end) ? " AND released_advert.date_unix <= $date_end" : '')." AND channel_advert.id_channel = $_POST[channel] AND advert.id = channel_advert.id_advert";
 	//echo $query;
 }
 
@@ -49,6 +49,9 @@ if(isset($_POST['paid'])){
 }
 if(isset($_POST['item']) && !empty($_POST['item'])){
 	$query .= " AND advert.item = $_POST[item]";
+}
+if(isset($_POST['user']) && !empty($_POST['user'])){
+	$query .= " AND advert.who_add = $_POST[user]";
 }
 if(!isset($_SESSION['access'][9])){
 	$query .= " AND advert.who_add = $_SESSION[user_id]";
@@ -94,6 +97,21 @@ if(mysql_num_rows($query) == 0){
 											?>
 								</select>
 							</div>
+
+							<div class="form-group">
+								<select class="form-control" name="user" id="user" <?php echo (!isset($_SESSION['access'][9]) ? ' disabled' : '')?>>
+											<option value="" <?php echo (!$_POST['user'] || empty($_POST['user']) ? ' selected' : '') ?>>Кто добавил</option>
+											<?php
+											$query_user = mysql_query("SELECT * FROM user");
+											while($row = mysql_fetch_assoc($query_user)){
+											?>
+									    	<option value="<?php echo $row['user_id']?>" <?php echo ($_POST['user'] == $row['user_id'] ? ' selected' : '') ?> ><?php echo $row['first_name']?></option>											
+											<?php
+											}
+											?>
+								</select>
+							</div>
+
 							<div class="form-group">
 								<select class="form-control" name="channel" id="channel">
 											<option value="" <?php echo (!$_POST['channel'] || empty($_POST['channel']) ? ' selected' : '') ?>>Канал выхода</option>
@@ -155,11 +173,11 @@ while($row = mysql_fetch_assoc($query)){
 <div class="btn-group">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>
   <ul class="dropdown-menu" role="menu">';
-  echo '<li><a href="/advert_show.php?id='.$row['md5_id'].'" target="_blank"><small>Просмотр</small></a></li><li class="divider" style="margin:0 0"></li>';
+  echo '<li><a href="/advert_show.php?id='.$row['md5_id'].'"><small>Просмотр</small></a></li><li class="divider" style="margin:0 0"></li>';
 if(isset($_SESSION['access'][12])){
 	echo '<li><a href="/advert_copy.php?id='.$row['md5_id'].'"><small>Дублировать</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
-if(isset($_SESSION['access'][8])){
+if(isset($_SESSION['access'][13]) || (isset($_SESSION['access'][8]) && $row['who_add'] == $_SESSION['user_id'])){
 	echo '<li><a href="/advert_edit2.php?id='.$row['md5_id'].'"><small>Редактировать текст</small></a></li><li class="divider" style="margin:0 0"></li>';
 }
 if(isset($_SESSION['access'][6])){
@@ -219,7 +237,7 @@ echo '</ul>
 </body>
 </html>
 <!-- вставляем скрипты общие для формы добавления и редактирования -->
-<script src="/js/ad.js"></script>
+
 <script type="text/javascript">
 $(".date_released").datepicker();
 $("#contract_table").tablesorter();

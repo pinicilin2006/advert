@@ -228,7 +228,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12" >
 								<div class="pull-right">
-								<?php if(isset($_SESSION['access'][8])){ ?>													
+								<?php if(isset($_SESSION['access'][13]) || (isset($_SESSION['access'][8]) && $advert_data['who_add'] == $_SESSION['user_id'])){ ?>													
 										<button class="btn btn-danger" value="1">РЕДАКТИРОВАТЬ</button>
 								<?php
 									}
@@ -261,6 +261,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 						<tr>
 		    				<th style = 'cursor: pointer;'>Дата изменения</th>
 		    				<th style = 'cursor: pointer;'>Текст</th>
+		    				<th style = 'cursor: pointer;'>Комментарий</th>
 		    				<th style = 'cursor: pointer;'>Оплачено</th>
 		    				<th style = 'cursor: pointer;'>Кто менял текст</th>
 		    			</tr>
@@ -274,6 +275,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 							echo '<tr>';
 							echo "<td>".date("d.m.Y H:i:s", strtotime($row_history['date_edit']))."</td>";
 							echo "<td>".$row_history['text_advert']."</td>";
+							echo "<td>".$row_history['comment']."</td>";
 							echo "<td>".($row_history['paid'] == 1 ? 'Да' : 'Нет')."</td>";
 							echo "<td>".$row_history['second_name']." ".$row_history['first_name']." ".$row_history['third_name']."</td>";	
 							echo "</tr>";

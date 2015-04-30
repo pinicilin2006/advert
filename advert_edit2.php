@@ -51,6 +51,9 @@ $advert_data = mysql_fetch_assoc($query);
 									<div class="form-group has-feedback">					    					    
 									      <textarea style="resize: none;" class="form-control calc text_advert" rows="3" id="ad" name="text_advert" placeholder="Текст объявления" required><?php echo $advert_data['text_advert']?></textarea>					    
 									</div>
+									<div class="form-group has-feedback">					    					    
+									      <input type="text" class="form-control" name="comment" placeholder="Комментарий" value="<?php echo $advert_data['comment']?>">				    
+									</div>									
 									<hr class="hr_red2">
 									<div class="form-group has-feedback pull-right">
 										<div class="checkbox-inline" >	

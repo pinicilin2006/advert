@@ -57,7 +57,7 @@ connect_to_base();
 					  		<dt>Права пользователя:</dt>
 					  		<hr class="hr_red3">
 					  		<?php
-					  		$query=mysql_query("SELECT * FROM `rights` WHERE active = 1 ORDER BY priority");
+					  		$query=mysql_query("SELECT * FROM `rights` WHERE active = 1 ORDER BY name");
 					  		while($row = mysql_fetch_assoc($query)){
 								echo "<dd><label class=\"checkbox-inline\"><input type=\"checkbox\" class=\"data_clear\" id=right_$row[id] name=\"rights[]\" value=\"$row[id]\" >$row[name]</label></dd>";
 							}

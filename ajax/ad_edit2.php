@@ -40,12 +40,15 @@ $advert_data_old = mysql_fetch_assoc($query_advert);
 if(!$paid){
 	$paid = 0;
 }
+if(!$comment){
+	$comment = 0;
+}
 $id_advert = $advert_data_old['id'];
-$query = "UPDATE `advert` SET text_advert = '".$text_advert."', paid  = '".$paid."', edit  = 1 WHERE `id` = '".$id_advert."'";
+$query = "UPDATE `advert` SET text_advert = '".$text_advert."', comment = '".$comment."', paid  = '".$paid."', edit  = 1 WHERE `id` = '".$id_advert."'";
 //Обновляем объявление в базе
 if(mysql_query($query)){
 	//если успешно то записываем старый текст в лог
-	mysql_query("INSERT INTO `old_advert` (id_advert,text_advert,paid,who_edit) VALUES('".$id_advert."','".$advert_data_old['text_advert']."','".$advert_data_old['paid']."','".$_SESSION['user_id']."')");
+	mysql_query("INSERT INTO `old_advert` (id_advert,text_advert,comment,paid,who_edit) VALUES('".$id_advert."','".$advert_data_old['text_advert']."','".$advert_data_old['comment']."','".$advert_data_old['paid']."','".$_SESSION['user_id']."')");
 } else {
 		echo "<p class=\"text-danger\">Произошла ошибка при добавление объявления в базу данных.</p>";
 		exit();	

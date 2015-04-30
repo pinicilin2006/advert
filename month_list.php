@@ -112,8 +112,7 @@ $month_name = array(
 			    			</thead>
 			    			<tbody>
 <?php
-$query_advert = mysql_query("SELECT * FROM released_advert r, channel_advert c, advert a WHERE r.date_released LIKE '%.".$month.".".$year."' AND r.id_advert = c.id_advert AND r.id_advert = a.id AND c.id_channel ".(empty($_POST['channel']) ? '>0' : "= $_POST[channel]")."
- GROUP BY r.id_advert");
+$query_advert = mysql_query("SELECT * FROM released_advert r, channel_advert c, advert a WHERE r.date_released LIKE '%.".$month.".".$year."' AND r.id_advert = c.id_advert AND r.id_advert = a.id AND c.id_channel ".(empty($_POST['channel']) ? '>0' : "= $_POST[channel]")." ".(!isset($_SESSION['access'][9]) ? " AND a.who_add = $_SESSION[user_id] " : '')." GROUP BY r.id_advert");
 $num_in_day = array();
 $num_in_day[$x] = 0;
 $num_all = 0;
@@ -137,7 +136,7 @@ $advert_all = mysql_num_rows($query_advert);
 			
 		}
 		echo "<td><center><b>$k</b></center></td>";
-		echo '<td><center><a href="/advert_show.php?id='.$advert['md5_id'].'" target="_blank">Просмотр</a></center></td>';
+		echo '<td><center><a href="/advert_show.php?id='.$advert['md5_id'].'">Просмотр</a></center></td>';
 		echo '</tr>';
 	}
 echo "<tr><td><b>Всего</b>:</td>";
