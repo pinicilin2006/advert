@@ -219,7 +219,7 @@ echo '</ul>
 							}
 							?>																							
 	  				</form>
-	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/excel/excel.php" target="_blank">
+	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/report_excel/report.php">
 							<div class="form-group">					    					    
 							      <input type="hidden" name="query_text" value="<?php echo $query_text ?>">					    
 							</div>
