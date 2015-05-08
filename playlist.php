@@ -1,16 +1,16 @@
 <?php
 session_start();
-if(!isset($_SESSION['user_id']) || !isset($_POST["query_text"]) || empty($_POST["date_released"])){
+if(!isset($_SESSION['user_id']) || !isset($_POST["query_text"])){
 	header("Location: /index.php");
 	exit;
 }
 require_once('config.php');
 require_once('function.php');
 connect_to_base();
-if(isset($_POST['date_released']) && empty($_POST['date_released'])){
-	echo 'Отсутствует дата';
-	exit;
-}
+// if(isset($_POST['date_released']) && empty($_POST['date_released'])){
+// 	echo 'Отсутствует дата';
+// 	exit;
+// }
 $query = mysql_query($_POST['query_text']);
 if(mysql_num_rows($query) < 1){
 	echo "Отсутствуют объявления для этого дня";

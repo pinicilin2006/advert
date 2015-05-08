@@ -170,29 +170,30 @@ while($row = mysql_fetch_assoc($query)){
 	echo "<td>".mysql_num_rows(mysql_query("SELECT * FROM `released_advert` WHERE `id_advert` = $row[id]"))."</td>";
 	echo "<td>".$row['price']."</td>";
 	echo "</td>";
-	echo '<td>
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>
-  <ul class="dropdown-menu" role="menu">';
-  echo '<li><a href="/advert_show.php?id='.$row['md5_id'].'"><small>Просмотр</small></a></li><li class="divider" style="margin:0 0"></li>';
-if(isset($_SESSION['access'][12])){
-	echo '<li><a href="/advert_copy.php?id='.$row['md5_id'].'"><small>Дублировать</small></a></li><li class="divider" style="margin:0 0"></li>';
-}
-if(isset($_SESSION['access'][13]) || (isset($_SESSION['access'][8]) && $row['who_add'] == $_SESSION['user_id'])){
-	echo '<li><a href="/advert_edit2.php?id='.$row['md5_id'].'"><small>Редактировать текст</small></a></li><li class="divider" style="margin:0 0"></li>';
-}
-if(isset($_SESSION['access'][6])){
-	echo '<li><a href="/advert_edit.php?id='.$row['md5_id'].'"><small>Полное редактирование</small></a></li><li class="divider" style="margin:0 0"></li>';
-}
-if(mysql_num_rows(mysql_query("SELECT * FROM `old_advert` WHERE id_advert = $row[id]")) > 0){
-	//echo '<li><a href="/advert_history.php?id='.$row['id'].'" target="_blank"><small>Список изменений</small></a></li><li class="divider" style="margin:0 0"></li>';
-}
-if(isset($_SESSION['access'][7])){
-	echo '<li><a href="/advert_delete.php?id='.$row['md5_id'].'"><small>Удалить</small></a></li><li class="divider" style="margin:0 0"></li>';
-}
-echo '</ul>
-</div>
-	</td>';
+	echo '<td>';
+	echo '<a href="/advert_show.php?id='.$row['md5_id'].'">Просмотр</a>';
+// echo '<div class="btn-group">
+//   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>
+//   <ul class="dropdown-menu" role="menu">';
+//   echo '<li><a href="/advert_show.php?id='.$row['md5_id'].'"><small>Просмотр</small></a></li><li class="divider" style="margin:0 0"></li>';
+// if(isset($_SESSION['access'][12])){
+// 	echo '<li><a href="/advert_copy.php?id='.$row['md5_id'].'"><small>Дублировать</small></a></li><li class="divider" style="margin:0 0"></li>';
+// }
+// if(isset($_SESSION['access'][13]) || (isset($_SESSION['access'][8]) && $row['who_add'] == $_SESSION['user_id'])){
+// 	echo '<li><a href="/advert_edit2.php?id='.$row['md5_id'].'"><small>Редактировать текст</small></a></li><li class="divider" style="margin:0 0"></li>';
+// }
+// if(isset($_SESSION['access'][6])){
+// 	echo '<li><a href="/advert_edit.php?id='.$row['md5_id'].'"><small>Полное редактирование</small></a></li><li class="divider" style="margin:0 0"></li>';
+// }
+// if(mysql_num_rows(mysql_query("SELECT * FROM `old_advert` WHERE id_advert = $row[id]")) > 0){
+// 	//echo '<li><a href="/advert_history.php?id='.$row['id'].'" target="_blank"><small>Список изменений</small></a></li><li class="divider" style="margin:0 0"></li>';
+// }
+// if(isset($_SESSION['access'][7])){
+// 	echo '<li><a href="/advert_delete.php?id='.$row['md5_id'].'"><small>Удалить</small></a></li><li class="divider" style="margin:0 0"></li>';
+// }
+// echo '</ul>
+// </div>';
+echo '</td>';
 	echo "</tr>";	
 	echo "</tr>";
 }
@@ -204,19 +205,19 @@ echo '</ul>
 	  			<hr class="hr_red">
 	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/playlist.php" target="_blank">
 							<div class="form-group">					    					    
-							      <input type="hidden" name="date_released" value="<?php echo $_POST['date_released'] ?>">					    
+							      <input type="hidden" name="date_released" value="<?php echo $_POST['date_released_start'] ?>">					    
 							</div>
 							<div class="form-group">					    					    
 							      <input type="hidden" name="query_text" value="<?php echo $query_text ?>">					    
 							</div>
 							<?php
-							if(isset($_POST['date_released']) && !empty($_POST['date_released']) && !empty($_POST['channel'])){
+							//if(isset($_POST['date_released_start']) && !empty($_POST['date_released_start']) && isset($_POST['date_released_end']) && !empty($_POST['date_released_end']) && $_POST['date_released_start'] == $_POST['date_released_end'] && !empty($_POST['channel'])){
 							?>							
 							<div class="form-group">
 								<button type="submit" class="btn btn-block btn-danger">Сформировать файл для выгрузки в программу</button>
 							</div>
 							<?php
-							}
+							//}
 							?>																							
 	  				</form>
 	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/report_excel/report.php">				    					    
