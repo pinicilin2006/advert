@@ -8,7 +8,7 @@ if(!isset($_SESSION['user_id'])){
 
 
 // echo "<pre>";
-// print_r($_POST);
+// print_r($_SESSION);
 // echo "</pre>";
 require_once('config.php');
 require_once('function.php');
@@ -219,10 +219,14 @@ echo '</ul>
 							}
 							?>																							
 	  				</form>
-	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/report_excel/report.php">
-							<div class="form-group">					    					    
-							      <input type="hidden" name="query_text" value="<?php echo $query_text ?>">					    
-							</div>
+	  				<form role="form" id="main_form" class="form-inline pull-right" method="post" action="/report_excel/report.php">				    					    
+							    <input type="hidden" name="query_text" value="<?php echo $query_text ?>">
+							    <input type="hidden" name="excel_date_released_start" value="<?php echo ($_POST['date_released_start'] ? $_POST['date_released_start'] : '') ?>">		
+								<input type="hidden" name="excel_date_released_end" value="<?php echo ($_POST['date_released_end'] ? $_POST['date_released_end'] : '') ?>">
+								<input type="hidden" name="excel_item" value="<?php echo ($_POST['item'] ? $_POST['item'] : '') ?>">
+								<input type="hidden" name="excel_user" value="<?php echo ($_POST['user'] ? $_POST['user'] : '') ?>">
+								<input type="hidden" name="excel_channel" value="<?php echo ($_POST['channel'] ? $_POST['channel'] : '') ?>">		
+								<input type="hidden" name="excel_paid" value="<?php echo ($_POST['paid'] ? '1' : '0') ?>">	
 							<div class="form-group">
 								<button type="submit" class="btn btn-block btn-danger">ЭКСПОРТ в Exel</button>
 							</div>																									
