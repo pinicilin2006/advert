@@ -214,7 +214,7 @@ echo '</td>';
 							//if(isset($_POST['date_released_start']) && !empty($_POST['date_released_start']) && isset($_POST['date_released_end']) && !empty($_POST['date_released_end']) && $_POST['date_released_start'] == $_POST['date_released_end'] && !empty($_POST['channel'])){
 							?>							
 							<div class="form-group">
-								<button type="submit" class="btn btn-block btn-danger">Сформировать файл для выгрузки в программу</button>
+								<button type="submit" class="btn btn-block btn-danger">Экспорт в тхт</button>
 							</div>
 							<?php
 							//}

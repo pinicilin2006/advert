@@ -59,6 +59,9 @@ while($row = mysql_fetch_array($query)) {
 	// 	//рамки для ячеек
 	$aSheet->getStyle('B'.($i).':O'.($i).'')->applyFromArray($font2);
 	$aSheet->getStyle('B'.($i).':O'.($i).'')->getAlignment()->setWrapText(true);
+	//$aSheet->getStyle('A'.($i).':B'.($i))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+	$aSheet->getStyle('G'.($i).':J'.($i))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
+	$aSheet->getStyle('L'.$i)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 	 	//$aSheet->getStyle('C'.($i))->getAlignment()->setWrapText(true); //переносить по стракам
 	// 	$aSheet->getStyle('G'.($i))->getAlignment()->setWrapText(true); //переносить по стракам
 	$aSheet->setCellValue('A'.$i, $n);
@@ -85,6 +88,11 @@ while($row = mysql_fetch_array($query)) {
 	$aSheet->setCellValue('J'.$i, " ".$day);
 	//Получаем скидку
 	$discount = ($calculation['discount'] == '' ? 0 : $calculation['discount']);
+	$discount = 0;
+	if($calculation['discount'] != ''){
+		$discount_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `discount` WHERE id = $calculation[discount_id]"));
+		$discount = $discount_data['name'];
+	}
 	$aSheet->setCellValue('K'.$i, " ".$discount);
 	//Сумма
 	$aSheet->setCellValue('L'.$i, " ".$calculation['summa']);
