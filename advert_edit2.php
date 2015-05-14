@@ -9,7 +9,7 @@ if(!isset($_GET['id'])){
 	header("Location: list.php");
 	exit;
 }
-if(!isset($_SESSION['access']['8'])){
+if(!isset($_SESSION['access']['8']) && !isset($_SESSION['access']['13'])){
 	header("Location: advert_list.php");
 	exit;
 }

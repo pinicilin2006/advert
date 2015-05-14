@@ -240,7 +240,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 									}
 								?>
 								<?php if(isset($_SESSION['access'][7])){ ?>										
-									<button class="btn btn-danger" value="2">УДАЛИТЬ</button>
+									<button class="btn btn-danger" value="4">УДАЛИТЬ</button>
 								<?php
 									}
 								?>																
@@ -330,6 +330,9 @@ $(".btn").bind("change click", function () {
 	}
 	if(a == '3'){
 		window.location.replace("/advert_copy.php?id="+id);
-	}		
+	}
+	if(a == '4'){
+		window.location.replace("/advert_delete.php?id="+id);
+	}			
 });
 </script>

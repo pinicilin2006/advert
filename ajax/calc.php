@@ -48,8 +48,11 @@ foreach ($channel as $key => $value) {
 }
 	$discount_data = mysql_fetch_assoc(mysql_query("SELECT * FROM discount WHERE id = $discount"));
 	if($discount_data['percent'] > 0){
-		$summa = round($summa - ($summa/100)*$discount_data['percent'], 2);
+		$summa = round($summa - ($summa/100)*$discount_data['percent'], 0);
 	} 
+//Округляем, убираем копейки
+	$summa = round($summa, 0);
+	$price_day = round($price_day, 0);
 //Закидываем в таблицу с расчётами
 if(mysql_query("INSERT INTO `calculation` (summa,price_day,discount,discount_id) VALUES ('".$summa."','".$price_day."','".$discount_data['percent']."','".$discount_data['id']."')")){
 	$_SESSION['calculation'] = mysql_insert_id();

@@ -76,7 +76,15 @@ while($row = mysql_fetch_array($query)) {
 	$channel = mysql_query("SELECT channel.name FROM `channel`,`channel_advert` where channel_advert.id_channel = channel.id AND channel_advert.id_advert = $row[id]");
 	$channel_name = '';
 	while ($row1 = mysql_fetch_array($channel)) {
-		$channel_name .= $row1['name'].", ";
+		if($row1['name'] == 'ТНТ-Бегушка'){
+			$channel_name .= 'Бег, ';
+		} elseif($row1['name'] == 'ТНТ-КомБлок'){
+			$channel_name .= 'Ком, ';
+		} elseif($row1['name'] == 'Новый Город'){
+			$channel_name .= 'НГ, ';
+		} else{
+			$channel_name .= $row1['name'].", ";
+		}
 	}
 	$channel_name = substr($channel_name, 0, -2);
 	$aSheet->setCellValue('H'.$i, " ".$channel_name);
