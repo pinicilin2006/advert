@@ -15,7 +15,7 @@ require_once('../function.php');
 connect_to_base();
 $err_text='';
 foreach($_POST as $key => $val){
-	if(empty($val)){
+	if(empty($val) && $val !='0'){
 		continue;
 	}	
 	$$key = mysql_escape_string($val);
@@ -24,10 +24,10 @@ $err_text = '';
 if(!$discount_id){
 	$err_text .= "<li class=\"text-danger\">Отсутствует id скидки</li>";
 }
-if(!$name){
+if(!isset($name)){
 	$err_text .= "<li class=\"text-danger\">Отсутствует название скидки</li>";
 }
-if(!$percent){
+if(!isset($percent)){
 	$err_text .= "<li class=\"text-danger\">Отсутствует размер скидки</li>";
 }
 if(mysql_num_rows(mysql_query("SELECT * FROM `discount` WHERE `name` = '".$discount."' AND `id` <> $discount_id"))>0){
