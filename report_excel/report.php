@@ -49,6 +49,23 @@ $font2 =  array(
 )
 )
 );
+
+$font3 =  array(
+'font' => array(
+'name' => 'Arial Cyr',
+'size' => '10'
+),
+'alignment' => array(
+'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER
+),
+'borders' => array(
+'allborders'     => array(
+'style' => PHPExcel_Style_Border::BORDER_THIN,
+'color' => array( 'rgb' => '000000' )
+)
+)
+);
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //Заполняем таблицу
 $n = 0;
@@ -62,8 +79,11 @@ while($row = mysql_fetch_array($query)) {
 	//$aSheet->getStyle('A'.($i).':B'.($i))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 	$aSheet->getStyle('G'.($i).':J'.($i))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 	$aSheet->getStyle('L'.$i)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-	 	//$aSheet->getStyle('C'.($i))->getAlignment()->setWrapText(true); //переносить по стракам
-	// 	$aSheet->getStyle('G'.($i))->getAlignment()->setWrapText(true); //переносить по стракам
+	//$aSheet->getStyle('C'.($i))->getAlignment()->setWrapText(true); //переносить по стракам
+	//$aSheet->getStyle('G'.($i))->getAlignment()->setWrapText(true); //переносить по стракам
+	$aSheet->getStyle('D'.($i))->applyFromArray($font3);
+	$aSheet->getStyle('F'.($i))->applyFromArray($font3);
+	$aSheet->getStyle('O'.($i))->applyFromArray($font3);
 	$aSheet->setCellValue('A'.$i, $n);
 	$aSheet->setCellValue('B'.$i, $row['id']);
 	$date_create = date('d.m.Y', strtotime($row["date_create"]));
@@ -71,7 +91,7 @@ while($row = mysql_fetch_array($query)) {
 	$aSheet->setCellValue('D'.$i, $row['name']);
 	$aSheet->setCellValue('E'.$i, " ".$row['phone']);
 	$aSheet->setCellValue('F'.$i, " ".$row['text_advert']);
-	$aSheet->setCellValue('G'.$i, " ".$row['words']);
+	$aSheet->setCellValue('G'.$i, $row['words']);
 	//Получаем канал выхода
 	$channel = mysql_query("SELECT channel.name FROM `channel`,`channel_advert` where channel_advert.id_channel = channel.id AND channel_advert.id_advert = $row[id]");
 	$channel_name = '';
@@ -90,10 +110,10 @@ while($row = mysql_fetch_array($query)) {
 	$aSheet->setCellValue('H'.$i, " ".$channel_name);
 	//получаем данные расчёта
 	$calculation = mysql_fetch_assoc(mysql_query("SELECT * FROM calculation WHERE id = $row[calc_id]"));
-	$aSheet->setCellValue('I'.$i, " ".$calculation['price_day']);
+	$aSheet->setCellValue('I'.$i, $calculation['price_day']);
 	//Получаем количество дней
 	$day = mysql_num_rows(mysql_query("SELECT * FROM released_advert WHERE id_advert = $row[id]"));
-	$aSheet->setCellValue('J'.$i, " ".$day);
+	$aSheet->setCellValue('J'.$i, $day);
 	//Получаем скидку
 	$discount = ($calculation['discount'] == '' ? 0 : $calculation['discount']);
 	$discount = 0;
@@ -101,9 +121,9 @@ while($row = mysql_fetch_array($query)) {
 		$discount_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `discount` WHERE id = $calculation[discount_id]"));
 		$discount = $discount_data['name'];
 	}
-	$aSheet->setCellValue('K'.$i, " ".$discount);
+	$aSheet->setCellValue('K'.$i, $discount);
 	//Сумма
-	$aSheet->setCellValue('L'.$i, " ".$calculation['summa']);
+	$aSheet->setCellValue('L'.$i, $calculation['summa']);
 	$summa_all = $summa_all + $calculation['summa'];
 	//Кто принял
 	$user = mysql_fetch_array(mysql_query("SELECT * FROM user WHERE user_id = $row[who_add]"));
