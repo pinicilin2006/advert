@@ -144,7 +144,7 @@ if(mysql_num_rows($query) == 0){
 		    					<tr>
 				    				<th style = 'cursor: pointer;'>№ </th>
 				    				<th style = 'cursor: pointer;'>Дата приёма </th>
-									<th style = 'cursor: pointer;width: 300px;'>Пункт приёма</th>
+									<th style = 'cursor: pointer;width: 150px;'>Пункт приёма</th>
 				    				<th style = 'cursor: pointer;'>Клиент</th>									
 				    				<th style = 'cursor: pointer;'>Текст</th>
 				    				<th style = 'cursor: pointer;'>Слов</th>
