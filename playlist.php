@@ -16,7 +16,12 @@ if(mysql_num_rows($query) < 1){
 	echo "Отсутствуют объявления для этого дня";
 	exit();
 }
-$file = "plalist.txt";
+if(isset($_POST['date_released']) && !empty($_POST['date_released'])){
+	$file = $_POST['date_released'].".txt";
+} else {
+	$file = date("d.m.Y").".txt";
+}
+
 $text = '';
 
 while($row = mysql_fetch_assoc($query)){

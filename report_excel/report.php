@@ -175,10 +175,10 @@ $aSheet->setCellValue('I12', $summa_all);
 //создаем объект класса-писателя
 include("Classes/PHPExcel/Writer/Excel5.php");
 $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-
+$file = date("d.m.Y").".xls";
 //выводим заголовки
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="report.xls"');
+header('Content-Disposition: attachment;filename='.$file);
 header('Cache-Control: max-age=0');
 //выводим в браузер таблицу с бланком
 $objWriter->save('php://output');

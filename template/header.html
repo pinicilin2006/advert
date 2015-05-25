@@ -2,15 +2,15 @@
 <?php
 //Проверяем не отключили ли сайт и если отключили то убираем сессию
 //Часть  переправляющая на страницу с логином
-  if(mysql_num_rows(mysql_query("SELECT * FROM `service_status` WHERE `checked` = '1' AND `destroy_session` = '1'")) == 1 && !$_SESSION["access"][5]){
-    // Unset все переменные сессии.
-    $_SESSION = array();
-    // Наконец, разрушить сессию.
-    session_destroy();
-    //Валим логинится
-    header("Location: /remont.php");
-    exit();
-  }
+  // if(mysql_num_rows(mysql_query("SELECT * FROM `service_status` WHERE `checked` = '1' AND `destroy_session` = '1'")) == 1 && !$_SESSION["access"][5]){
+  //   // Unset все переменные сессии.
+  //   $_SESSION = array();
+  //   // Наконец, разрушить сессию.
+  //   session_destroy();
+  //   //Валим логинится
+  //   header("Location: /remont.php");
+  //   exit();
+  // }
 ?>
 <html lang="en">
   <head>
