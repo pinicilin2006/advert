@@ -71,7 +71,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 								<div class="row">
 									<div class="col-xs-8 col-sm-8 col-md-8">
 										<div class="form-group has-feedback">					    					    
-										      <input type="text" class="form-control" id="client_name" name="client_name" value="<?php echo $client_data['name']?>" placeholder="Заказчик (Фамилия / Организация)" required>					    
+										      <input type="text" class="form-control" id="client_name" name="client_name" value='<?php echo $client_data['name']?>' placeholder="Заказчик (Фамилия / Организация)" required>					    
 										</div>
 							  		</div>
 									<div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:0px">
