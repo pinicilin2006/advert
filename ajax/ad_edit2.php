@@ -41,7 +41,7 @@ if(!$paid){
 	$paid = 0;
 }
 if(!$comment){
-	$comment = 0;
+	$comment = '';
 }
 $id_advert = $advert_data_old['id'];
 $query = "UPDATE `advert` SET text_advert = '".$text_advert."', comment = '".$comment."', paid  = '".$paid."', edit  = 1 WHERE `id` = '".$id_advert."'";
