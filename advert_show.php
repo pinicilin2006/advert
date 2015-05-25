@@ -36,7 +36,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 ?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-12">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
 	    			<h3 class="panel-title"><b><span class="text-danger">ПРОСМОТР ОБЪЯВЛЕНИЯ</span></b></h3>

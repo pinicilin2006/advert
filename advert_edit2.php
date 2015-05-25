@@ -30,7 +30,7 @@ $advert_data = mysql_fetch_assoc($query);
 ?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-2">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
 	    			<h3 class="panel-title"><b><span class="text-danger">РЕДАКТИРОВАНИЕ ОБЪЯВЛЕНИЯ</span></b></h3>

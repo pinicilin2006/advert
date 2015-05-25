@@ -34,7 +34,7 @@ $calc_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `calculation` WHERE `i
 ?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-12">
 			<div class="panel panel-default">
 	  			<div class="panel-heading">
 	    			<h3 class="panel-title"><b><span class="text-danger">ДОБАВИТЬ ОБЪЯВЛЕНИЕ</span></b></h3>
