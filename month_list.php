@@ -166,7 +166,7 @@ echo '<td><center><b>'.$num_all.'</b></center></td><tr>';
 // print_r($num_in_day);
 // echo '</pre>';
 ?>
-<div class="footer navbar-fixed-bottom text-center">
+<div class="footer text-center">
   <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
@@ -175,4 +175,5 @@ echo '<td><center><b>'.$num_all.'</b></center></td><tr>';
 <script src="/js/ad.js"></script>
 <script type="text/javascript">
 $("#date_released").datepicker();
+setInterval(check_login, 30000);
 </script>

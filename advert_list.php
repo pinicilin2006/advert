@@ -56,7 +56,7 @@ if(isset($_POST['user']) && !empty($_POST['user'])){
 if(!isset($_SESSION['access'][9])){
 	$query .= " AND advert.who_add = $_SESSION[user_id]";
 }
-$query .= " ORDER BY id";
+$query .= " ORDER BY id DESC";
 $query_text = $query;
 //echo $query;
 $query = mysql_query($query);
@@ -138,7 +138,7 @@ if(mysql_num_rows($query) == 0){
 	  			</div>
 	  			<div class="row">
 	  			<hr class="hr_red2">
-					<div class="table-responsive">
+					<div>
 		    			<table class='table table-hover table-responsive table-condensed table-bordered' id='contract_table'>
 		    				<thead>
 		    					<tr>
@@ -237,7 +237,7 @@ echo '</td>';
 		</div>
 	</div>
 </div>
-<div class="footer navbar-fixed-bottom text-center">
+<div class="footer text-center">
   <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
@@ -247,4 +247,5 @@ echo '</td>';
 <script type="text/javascript">
 $(".date_released").datepicker();
 $("#contract_table").tablesorter();
+setInterval(check_login, 30000);
 </script>

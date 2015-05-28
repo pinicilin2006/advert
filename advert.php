@@ -209,7 +209,7 @@ require_once('template/header.html');
 		</div>
 	</div>
 </div>
-<div class="footer navbar-fixed-bottom text-center">
+<div class="footer text-center">
   <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
@@ -219,7 +219,8 @@ require_once('template/header.html');
 <script type="text/javascript">
 //календарик
 $('#released').multiDatesPicker({
-		minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+		//minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+	  	minDate: 0,
 	  	onSelect: function() {
 	    	num_days();
 	    	calc();
@@ -236,7 +237,8 @@ $("#speed").bind("change click", function () {
     	$("#released").val('');
     	$("#released").multiDatesPicker("destroy");
 		$('#released').multiDatesPicker({
-				minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 0 : 1) ?>,
+				//minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 0 : 1) ?>,
+			  	minDate: 0,
 			  	onSelect: function() {
 			    	num_days();
 			    	calc();
@@ -248,7 +250,8 @@ $("#speed").bind("change click", function () {
     	$("#released").val('');
 		$("#released").multiDatesPicker("destroy");
 		$('#released').multiDatesPicker({
-				minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+				//minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+			  	minDate: 0,
 			  	onSelect: function() {
 			    	num_days();
 			    	calc();
@@ -257,6 +260,7 @@ $("#speed").bind("change click", function () {
     }
 
 });
+setInterval(check_login, 30000);
 //проверка данных формы
     $('#main_form').submit(function( event ) {
     	add_advert();

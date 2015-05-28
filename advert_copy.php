@@ -225,7 +225,7 @@ $calc_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `calculation` WHERE `i
 		</div>
 	</div>
 </div>
-<div class="footer navbar-fixed-bottom text-center">
+<div class="footer text-center">
   <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
@@ -281,6 +281,7 @@ $("#speed").bind("change click", function () {
     }
 
 });
+setInterval(check_login, 30000);
 //проверка данных формы
     $('#main_form').submit(function( event ) {
     	add_advert();

@@ -189,6 +189,19 @@ function edit_speed(){
 			return false;
 }
 
+function check_login(){
+			var a = 'check_login';
+			$.ajax({
+			  type: "POST",
+			  url: '/ajax/check_login.php',
+			  data: a,
+			  success: function(data) {
+			  	if(data == 'NO'){
+			  		window.location = "/login.php";
+			  	}
+			  }
+			});			
+}
 // function price(){
 // 			var a = $("#main_form").serialize();
 // 			$.ajax({

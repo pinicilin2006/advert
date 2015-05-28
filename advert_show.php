@@ -288,7 +288,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 	</div> 		
 
 </div>
-<div class="footer navbar-fixed-bottom text-center">
+<div class="footer text-center">
   <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
@@ -296,6 +296,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 <!-- вставляем скрипты общие для формы добавления и редактирования -->
 <script src="/js/ad.js"></script>
 <script type="text/javascript">
+setInterval(check_login, 30000);
 <?php
 //ставим чекбоксы на каналах
 while($row = mysql_fetch_assoc($channel_data)){

@@ -44,6 +44,9 @@ require_once('template/header.html');
         </div>
       </div>
     </div>
+	<div class="footer text-center">
+	  <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
+	</div>    
   </body>
 </html>
 <script type="text/javascript">
@@ -58,6 +61,7 @@ $(document).on("click", ".admin_menu", function(){
   $("#message").load("/admin/"+a+".php");
   return false;
 });
+setInterval(check_login, 30000);
 //проверка данных формы
     // $('#main_form').submit(function( event ) {
     // 	add_news();

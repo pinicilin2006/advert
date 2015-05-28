@@ -231,7 +231,7 @@ $_SESSION['calculation'] = $advert_data['calc_id'];
 		</div>
 	</div>
 </div>
-<div class="footer navbar-fixed-bottom text-center">
+<div class="footer text-center">
   <small>©<?php echo date("Y") ?>. <a class="sia_red" href="<?php echo $link_organization ?>" target="_blank"><b><?php echo $name_organization ?></b>.</a></small>
 </div>
 </body>
@@ -270,6 +270,7 @@ echo '$("#days").val("'.$i.'");'."\n";
 //Отмечаем даты в календарике
 
 ?>
+setInterval(check_login, 30000);
 //проверка данных формы
     $('#main_form').submit(function( event ) {
     	edit_advert();
