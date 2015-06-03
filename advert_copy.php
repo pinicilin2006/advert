@@ -235,7 +235,8 @@ $calc_data = mysql_fetch_assoc(mysql_query("SELECT * FROM `calculation` WHERE `i
 <script type="text/javascript">
 //календарик
 $('#released').multiDatesPicker({
-		minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+		//minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+	  	minDate: 0,
 	  	onSelect: function() {
 	    	num_days();
 	    	calc();
