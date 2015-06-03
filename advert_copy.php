@@ -260,7 +260,8 @@ $("#speed").bind("change click", function () {
     	$("#released").val('');
     	$("#released").multiDatesPicker("destroy");
 		$('#released').multiDatesPicker({
-				minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 0 : 1) ?>,
+				//minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 0 : 1) ?>,
+			  	minDate: 0,
 			  	onSelect: function() {
 			    	num_days();
 			    	calc();
@@ -272,7 +273,8 @@ $("#speed").bind("change click", function () {
     	$("#released").val('');
 		$("#released").multiDatesPicker("destroy");
 		$('#released').multiDatesPicker({
-				minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+				//minDate: <?php echo (strtotime(date("d.m.Y")." ".$_SESSION['max_time']) >= strtotime(date("d.m.Y H:i")) ? 1 : 2) ?>,
+			  	minDate: 0,
 			  	onSelect: function() {
 			    	num_days();
 			    	calc();
