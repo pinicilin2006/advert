@@ -142,6 +142,9 @@ $advert_all = mysql_num_rows($query_advert);
 echo "<tr><td><b>Всего</b>:</td>";
 	for($z=1;$z<=$day_in_month;$z++){
 		echo '<td>';
+		if($z < 10){
+			$z = "0".$z;
+		}		
 		if(isset($num_in_day[$z])){
 			echo $num_in_day[$z];
 		} else {
