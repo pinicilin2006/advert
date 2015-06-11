@@ -30,10 +30,10 @@ if(isset($_POST['date_released_start']) || isset($_POST['date_released_end'])){
 		$date_released = 1;
 	}
 }
-$query = "SELECT advert.*, client.*, item.name item_name FROM `advert`,`client`,`item` WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.date_create>DATE_ADD(now(), INTERVAL -31 DAY)";
+$query = "SELECT advert.*, client.name, client.phone, item.name item_name FROM `advert`,`client`,`item` WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.date_create>DATE_ADD(now(), INTERVAL -31 DAY)";
 //$query = "SELECT advert.*,client.*,item.name item_name,"
 if(isset($_POST['channel']) && !empty($_POST['channel'])){
-	$query = "SELECT advert.*, client.*, item.name item_name,channel_advert.* FROM `advert`,`client`,`item`,channel_advert WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.id = channel_advert.id_advert AND channel_advert.id_channel = $_POST[channel]";
+	$query = "SELECT advert.*, client.name, client.phone, item.name item_name,channel_advert.* FROM `advert`,`client`,`item`,channel_advert WHERE advert.id_client = client.id_client AND item.id = advert.item AND advert.id = channel_advert.id_advert AND channel_advert.id_channel = $_POST[channel]";
 }
 if(isset($date_released) && empty($_POST['channel'])){
 	$query = "SELECT distinct advert.id, advert.calc_id, advert.comment, advert.md5_id, advert.date_create, advert.paid, advert.text_advert, advert.words, advert.price, advert.who_add, client.name, client.phone, item.name item_name FROM `advert`,`client`,`item`, `released_advert` WHERE advert.id_client = client.id_client  AND item.id = advert.item AND released_advert.id_advert = advert.id ".(isset($date_start) ? " AND released_advert.date_unix >= $date_start" : '')." ".(isset($date_end) ? " AND released_advert.date_unix <= $date_end" : '')." ";
